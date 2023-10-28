@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="423.0" prefWidth="536.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.courseworkfx.AddDialogController">
+   <children>
+      <Button fx:id="buttonSubmit" layoutX="379.0" layoutY="389.0" mnemonicParsing="false" onAction="#onSubmitClicked" prefHeight="26.0" prefWidth="142.0" text="Submit" />
+      <TextField fx:id="textFieldFileLocation" layoutX="92.0" layoutY="190.0" prefHeight="26.0" prefWidth="246.0" />
+      <Label alignment="TOP_LEFT" layoutX="14.0" layoutY="21.0" prefHeight="42.0" prefWidth="276.0" text="Your file will be..">
+         <font>
+            <Font name="Segoe UI Bold" size="33.0" />
+         </font>
+      </Label>
+      <CheckBox fx:id="checkBoxSubtitles" layoutX="36.0" layoutY="371.0" mnemonicParsing="false" text="Does it have subtitles?" />
+      <Label layoutX="35.0" layoutY="195.0" text="File Path" />
+      <TextField fx:id="textFieldDuration" layoutX="128.0" layoutY="253.0" prefHeight="26.0" prefWidth="118.0" />
+      <Label layoutX="38.0" layoutY="257.0" text="Duration" />
+      <TextField fx:id="textFieldVCodec" layoutX="128.0" layoutY="293.0" prefHeight="26.0" prefWidth="118.0" />
+      <Label layoutX="38.0" layoutY="298.0" text="Video Codec" />
+      <TextField fx:id="textFieldName" layoutX="90.0" layoutY="145.0" prefHeight="26.0" prefWidth="118.0" />
+      <Label layoutX="35.0" layoutY="150.0" text="Name" />
+      <TextField fx:id="textFieldFormat" layoutX="379.0" layoutY="252.0" prefHeight="26.0" prefWidth="118.0" />
+      <Label layoutX="327.0" layoutY="256.0" text="Format" />
+      <Label layoutX="121.0" layoutY="75.0" text="~~manually input all necessary data~~">
+         <font>
+            <Font size="17.0" />
+         </font>
+      </Label>
+      <TextField fx:id="textFieldACodec" layoutX="128.0" layoutY="331.0" prefHeight="26.0" prefWidth="118.0" />
+      <Label layoutX="38.0" layoutY="335.0" text="Audio Codec" />
+      <TextField fx:id="textFieldPlayer" layoutX="379.0" layoutY="331.0" prefHeight="26.0" prefWidth="118.0" />
+      <Label layoutX="325.0" layoutY="335.0" text="Player" />
+      <TextField fx:id="textFieldSize" layoutX="379.0" layoutY="293.0" prefHeight="26.0" prefWidth="118.0" />
+      <Label layoutX="327.0" layoutY="297.0" text="Size" />
+      <Label layoutX="25.0" layoutY="109.0" text="main data">
+         <font>
+            <Font name="System Bold" size="15.0" />
+         </font>
+      </Label>
+      <Label layoutX="26.0" layoutY="223.0" text="other properties">
+         <font>
+            <Font name="System Bold" size="15.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>
