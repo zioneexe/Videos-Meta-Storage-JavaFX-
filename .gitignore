@@ -40,4 +40,5 @@ build/
 mvnw.cmd
 pom.xml
 mvnw
-CourseworkFX.iml
+CourseworkFX.iml.mvn\
+.idea\
