@@ -35,4 +35,9 @@ build/
 .vscode/
 
 ### Mac OS ###
-.DS_Store
+.DS_Store.mvn\
+.idea\
+mvnw.cmd
+pom.xml
+mvnw
+CourseworkFX.iml
