@@ -5,18 +5,18 @@ import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 
 /**
- * The `InvalidDataAlert` class is responsible for displaying an alert when invalid data is detected.
+ * The `InvalidFileFormatAlert` class is responsible for displaying an alert when an invalid file format is detected.
  * It extends the JavaFX `Application` class and shows an error alert when started.
  */
-public class InvalidDataAlert extends Application {
+public class InvalidFileFormatAlert extends Application {
 
     /**
-     * Shows the invalid data alert by launching a new instance of the `InvalidDataAlert` class.
+     * Shows the invalid file format alert by launching a new instance of the `InvalidFileFormatAlert` class.
      *
      * @throws Exception If an exception occurs during the alert display.
      */
-    public static void showInvalidDataAlert() throws Exception {
-        InvalidDataAlert alert = new InvalidDataAlert();
+    public static void showInvalidFileFormatAlert() throws Exception {
+        InvalidFileFormatAlert alert = new InvalidFileFormatAlert();
         Stage stage = new Stage();
         alert.start(stage);
     }
@@ -31,7 +31,7 @@ public class InvalidDataAlert extends Application {
     public void start(Stage stage) throws Exception {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Oooh..");
-        alert.setContentText("Your input is unacceptable!");
+        alert.setContentText("The file format is incorrect! Search for .txt");
         alert.showAndWait();
     }
 }

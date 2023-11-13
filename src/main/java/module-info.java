@@ -1,6 +1,7 @@
 module com.example.courseworkfx {
     requires javafx.controls;
     requires javafx.fxml;
+    requires java.desktop;
 
 
     opens com.example.courseworkfx to javafx.fxml;

@@ -5,18 +5,18 @@ import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 
 /**
- * The `InvalidDataAlert` class is responsible for displaying an alert when invalid data is detected.
+ * The `EmptyTableAlert` class is responsible for displaying an alert when attempting an action on an empty table.
  * It extends the JavaFX `Application` class and shows an error alert when started.
  */
-public class InvalidDataAlert extends Application {
+public class EmptyTableAlert extends Application {
 
     /**
-     * Shows the invalid data alert by launching a new instance of the `InvalidDataAlert` class.
+     * Shows the empty table alert by launching a new instance of the `EmptyTableAlert` class.
      *
      * @throws Exception If an exception occurs during the alert display.
      */
-    public static void showInvalidDataAlert() throws Exception {
-        InvalidDataAlert alert = new InvalidDataAlert();
+    public static void showEmptyTableAlert() throws Exception {
+        EmptyTableAlert alert = new EmptyTableAlert();
         Stage stage = new Stage();
         alert.start(stage);
     }
@@ -31,7 +31,7 @@ public class InvalidDataAlert extends Application {
     public void start(Stage stage) throws Exception {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Oooh..");
-        alert.setContentText("Your input is unacceptable!");
+        alert.setContentText("You can't do that! The table is empty.");
         alert.showAndWait();
     }
 }

@@ -1,4 +1,4 @@
-Name;File location;File format;Duration;VCodec;ACodec;Has subtitles;Video size (MB);Player,
+Name;File location;File format;Duration (HH:MM:SS);VCodec;ACodec;Has subtitles;Video size (MB);Player,
 file1.mp4;/video/file1.mp4;MP4;00:10:30;H.264;AAC;Yes;200.5;VLC Media Player,
 file2.mkv;/video/file2.mkv;MKV;00:15:45;H.265;Dolby Digital;No;305.3;MPC-HC,
 file3.avi;/video/file3.avi;AVI;00:05:20;XviD;MP3;Yes;103.8;Windows Media Player,

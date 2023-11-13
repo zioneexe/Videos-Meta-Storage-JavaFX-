@@ -1,0 +1,52 @@
+Name;File location;File format;Duration (HH:MM:SS);VCodec;ACodec;Has subtitles;Video size (MB);Player
+Family_Vacation.mp4;/videos/Family_Vacation.mp4;MP4;00:45:20;H.264;AAC;Yes;650.5;VLC Media Player
+Adventure_Time.mkv;/videos/Adventure_Time.mkv;MKV;01:20:15;H.265;Dolby Digital;No;1050.3;MPC-HC
+Funny_Cat_Videos.avi;/videos/Funny_Cat_Videos.avi;AVI;00:10:30;XviD;MP3;Yes;230.8;Windows Media Player
+Epic_Journey.mp4;/videos/Epic_Journey.mp4;MP4;01:15:45;H.264;AAC;Yes;1203.0;KMPlayer
+Documentary.mkv;/videos/Documentary.mkv;MKV;00:55:50;H.265;Dolby Digital;Yes;892.7;PotPlayer
+Cooking_Show.avi;/videos/Cooking_Show.avi;AVI;00:35:40;XviD;MP3;No;450.2;VLC Media Player
+Gaming_Session.mp4;/videos/Gaming_Session.mp4;MP4;01:10:25;H.264;AAC;Yes;980.0;MPC-HC
+Nature_Discovery.mkv;/videos/Nature_Discovery.mkv;MKV;00:50:30;H.265;Dolby Digital;Yes;750.5;Windows Media Player
+DIY_Project.avi;/videos/DIY_Project.avi;AVI;00:25:15;XviD;MP3;No;320.7;PotPlayer
+Movie_Night.mp4;/videos/Movie_Night.mp4;MP4;00:55:30;H.264;AAC;No;780.6;KMPlayer
+Music_Concert.mkv;/videos/Music_Concert.mkv;MKV;01:30:20;H.265;Dolby Digital;Yes;1125.2;VLC Media Player
+Art_Exhibition.avi;/videos/Art_Exhibition.avi;AVI;00:40:45;XviD;MP3;No;520.3;MPC-HC
+Cute_Puppy_Videos.mp4;/videos/Cute_Puppy_Videos.mp4;MP4;00:35:20;H.264;AAC;Yes;650.8;PotPlayer
+Tech_Review.mkv;/videos/Tech_Review.mkv;MKV;00:50:45;H.265;Dolby Digital;Yes;930.1;Windows Media Player
+Fitness_Workout.avi;/videos/Fitness_Workout.avi;AVI;00:30:15;XviD;MP3;No;420.5;VLC Media Player
+Travel_Diaries.mp4;/videos/Travel_Diaries.mp4;MP4;01:05:40;H.264;AAC;Yes;850.2;KMPlayer
+Historical_Documentary.mkv;/videos/Historical_Documentary.mkv;MKV;00:45:55;H.265;Dolby Digital;Yes;1005.4;MPC-HC
+Fashion_Show.avi;/videos/Fashion_Show.avi;AVI;00:20:20;XviD;MP3;No;280.9;PotPlayer
+Gourmet_Cooking.mp4;/videos/Gourmet_Cooking.mp4;MP4;00:30:50;H.264;AAC;Yes;520.5;Windows Media Player
+Concert_Performance.mkv;/videos/Concert_Performance.mkv;MKV;01:15:35;H.265;Dolby Digital;Yes;1120.7;VLC Media Player
+Artistic_Experiment.avi;/videos/Artistic_Experiment.avi;AVI;00:25:45;XviD;MP3;No;365.2;KMPlayer
+Home_Decor.mp4;/videos/Home_Decor.mp4;MP4;00:40:30;H.264;AAC;No;720.4;MPC-HC
+Comedy_Show.mkv;/videos/Comedy_Show.mkv;MKV;00:30:55;H.265;Dolby Digital;Yes;480.8;PotPlayer
+Pet_Adventures.avi;/videos/Pet_Adventures.avi;AVI;00:15:20;XviD;MP3;No;210.3;VLC Media Player
+Inspirational_Talk.mp4;/videos/Inspirational_Talk.mp4;MP4;00:50:35;H.264;AAC;Yes;920.6;Windows Media Player
+Science_Documentary.mkv;/videos/Science_Documentary.mkv;MKV;01:05:20;H.265;Dolby Digital;Yes;1105.9;KMPlayer
+Gardening_Tips.avi;/videos/Gardening_Tips.avi;AVI;00:35:45;XviD;MP3;No;480.7;PotPlayer
+Summer_Adventure.mp4;/videos/Summer_Adventure.mp4;MP4;00:42:30;H.264;AAC;Yes;620.5;VLC Media Player
+Mystery_Thriller.mkv;/videos/Mystery_Thriller.mkv;MKV;01:18:15;H.265;Dolby Digital;No;1020.3;MPC-HC
+Funny_Vine_Compilation.avi;/videos/Funny_Vine_Compilation.avi;AVI;00:12:30;XviD;MP3;Yes;180.8;Windows Media Player
+Epic_Cinematic_Journey.mp4;/videos/Epic_Cinematic_Journey.mp4;MP4;01:14:45;H.264;AAC;Yes;1150.0;KMPlayer
+Concert_Highlights.mkv;/videos/Concert_Highlights.mkv;MKV;00:58:50;H.265;Dolby Digital;Yes;900.7;PotPlayer
+Cooking_With_Chef_Julia.avi;/videos/Cooking_With_Chef_Julia.avi;AVI;00:32:40;XviD;MP3;No;420.2;VLC Media Player
+Gaming_Fun.mp4;/videos/Gaming_Fun.mp4;MP4;01:09:25;H.264;AAC;Yes;950.0;MPC-HC
+Wildlife_Documentary.mkv;/videos/Wildlife_Documentary.mkv;MKV;00:49:30;H.265;Dolby Digital;Yes;820.5;Windows Media Player
+DIY_Home_Decor.avi;/videos/DIY_Home_Decor.avi;AVI;00:28:15;XviD;MP3;No;380.7;PotPlayer
+Cinematic_Masterpiece.mp4;/videos/Cinematic_Masterpiece.mp4;MP4;01:02:40;H.264;AAC;No;720.6;KMPlayer
+Live_Music_Performance.mkv;/videos/Live_Music_Performance.mkv;MKV;01:25:20;H.265;Dolby Digital;Yes;1080.2;VLC Media Player
+Art_Exhibition_Showcase.avi;/videos/Art_Exhibition_Showcase.avi;AVI;00:38:45;XviD;MP3;No;500.3;MPC-HC
+Adorable_Pet_Videos.mp4;/videos/Adorable_Pet_Videos.mp4;MP4;00:32:20;H.264;AAC;Yes;600.8;PotPlayer
+Latest_Tech_Review.mkv;/videos/Latest_Tech_Review.mkv;MKV;00:48:45;H.265;Dolby Digital;Yes;870.1;Windows Media Player
+Cardio_Workout.avi;/videos/Cardio_Workout.avi;AVI;00:29:15;XviD;MP3;No;370.5;VLC Media Player
+Journey_to_the_Past.mp4;/videos/Journey_to_the_Past.mp4;MP4;01:00:40;H.264;AAC;Yes;820.5;KMPlayer
+Historical_Moments.mkv;/videos/Historical_Moments.mkv;MKV;00:42:55;H.265;Dolby Digital;Yes;950.7;PotPlayer
+Fashion_Runway_Show.avi;/videos/Fashion_Runway_Show.avi;AVI;00:22:20;XviD;MP3;No;280.8;Windows Media Player
+Gourmet_Culinary_Journey.mp4;/videos/Gourmet_Culinary_Journey.mp4;MP4;00:38:30;H.264;AAC;Yes;680.6;MPC-HC
+Comedy_Club_Night.mkv;/videos/Comedy_Club_Night.mkv;MKV;00:31:55;H.265;Dolby Digital;Yes;550.8;VLC Media Player
+Pet_Playtime_Adventures.avi;/videos/Pet_Playtime_Adventures.avi;AVI;00:17:20;XviD;MP3;No;230.3;PotPlayer
+Motivational_Speaker.mp4;/videos/Motivational_Speaker.mp4;MP4;00:48:35;H.264;AAC;Yes;870.6;Windows Media Player
+Science_Exploration.mkv;/videos/Science_Exploration.mkv;MKV;01:02:20;H.265;Dolby Digital;Yes;1050.9;KMPlayer
+Home_Garden_Tips.avi;/videos/Home_Garden_Tips.avi;AVI;00:34:45;XviD;MP3;No;480.7;PotPlayer
