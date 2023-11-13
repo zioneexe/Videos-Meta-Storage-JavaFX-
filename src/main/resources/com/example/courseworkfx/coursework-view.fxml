@@ -19,98 +19,94 @@
 
 <AnchorPane xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.courseworkfx.CourseworkController">
    <children>
-      <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-         <children>
-            <MenuBar maxWidth="1.7976931348623157E308" minHeight="-Infinity" prefHeight="26.0" prefWidth="1107.0">
-              <menus>
-                <Menu text="File">
-                  <items>
-                    <MenuItem fx:id="menuRead" onAction="#onMenuReadClicked" text="Read" />
-                        <MenuItem fx:id="menuSave" onAction="#onMenuSaveClicked" text="Save As" />
-                  </items>
-                </Menu>
-                <Menu text="Tools">
-                  <items>
-                        <Menu text="Calculate">
-                           <items>
-                              <Menu text="Maximum">
-                                 <items>
-                                    <MenuItem fx:id="menuCalcMaxSize" mnemonicParsing="false" onAction="#onMenuCalcMaxSizeClicked" text="Size" />
-                                    <MenuItem fx:id="menuCalcMaxDuration" mnemonicParsing="false" onAction="#onMenuCalcMaxDurationClicked" text="Duration" />
-                                 </items>
-                              </Menu>
-                              <Menu text="Minimum">
-                                 <items>
-                                    <MenuItem fx:id="menuCalcMinSize" mnemonicParsing="false" onAction="#onMenuCalcMinSizeClicked" text="Size" />
-                                 </items>
-                              </Menu>
-                              <Menu text="Average">
-                                 <items>
-                                    <MenuItem fx:id="menuCalcAvgSize" mnemonicParsing="false" onAction="#onMenuCalcAvgSizeClicked" text="Size" />
-                                    <MenuItem fx:id="menuCalcAvgDuration" mnemonicParsing="false" onAction="#onMenuCalcAvgDurationClicked" text="Duration" />
-                                 </items>
-                              </Menu>
-                           </items>
-                        </Menu>
-                        <SeparatorMenuItem mnemonicParsing="false" />
-                        <Menu text="Filter by">
-                           <items>
-                              <MenuItem fx:id="menuFBName" mnemonicParsing="false" onAction="#onMenuFBNameClicked" text="Name" />
-                              <MenuItem fx:id="menuFBFormat" mnemonicParsing="false" onAction="#onMenuFBFormatClicked" text="Format" />
-                              <MenuItem fx:id="menuFBPath" mnemonicParsing="false" onAction="#onMenuFBPathClicked" text="Path" />
-                              <MenuItem fx:id="menuFBDuration" mnemonicParsing="false" onAction="#onMenuFBDurationClicked" text="Duration" />
-                              <CheckMenuItem fx:id="menuFBSubtitles" mnemonicParsing="false" onAction="#onMenuFBSubtitlesChecked" text="Subtitles" />
-                           </items>
-                        </Menu>
-                        <Menu text="Sort by">
-                           <items>
-                              <MenuItem fx:id="menuSBSize" mnemonicParsing="false" onAction="#onMenuSBSizeClicked" text="Size" />
-                              <MenuItem fx:id="menuSBDuration" mnemonicParsing="false" onAction="#onMenuSBDurationClicked" text="Duration" />
-                              <MenuItem fx:id="menuSBFormat" mnemonicParsing="false" onAction="#onMenuSBFormatClicked" text="Format" />
-                           </items>
-                        </Menu>
-                        <Menu text="Group by">
-                           <items>
-                              <MenuItem fx:id="menuGBLongestVideos" mnemonicParsing="false" onAction="#onMenuGBLongestVideosClicked" text="Longest videos" />
-                              <MenuItem fx:id="menuGBAudioCodec" mnemonicParsing="false" onAction="#onMenuGBAudioCodecClicked" text="Audio Codec" />
-                              <MenuItem fx:id="menuGBVideoCodec" mnemonicParsing="false" onAction="#onMenuGBVideoCodecClicked" text="Video Codec" />
-                              <MenuItem fx:id="menuGBPlayer" mnemonicParsing="false" onAction="#onMenuGBPlayerClicked" text="Player" />
-                           </items>
-                        </Menu>
-                  </items>
-                </Menu>
-                  <Menu text="Videos">
+      <MenuBar maxWidth="1.7976931348623157E308" minHeight="-Infinity" prefHeight="26.0" prefWidth="1107.0" AnchorPane.topAnchor="0.0">
+        <menus>
+          <Menu text="File">
+            <items>
+              <MenuItem fx:id="menuRead" onAction="#onMenuReadClicked" text="Read" />
+                  <MenuItem fx:id="menuSave" onAction="#onMenuSaveClicked" text="Save As" />
+            </items>
+          </Menu>
+          <Menu text="Tools">
+            <items>
+                  <Menu text="Calculate">
                      <items>
-                        <MenuItem fx:id="menuVideosAdd" onAction="#onMenuVideosAddClicked" text="Add" />
-                        <MenuItem fx:id="menuVideosRemove" onAction="#onMenuVideosRemoveClicked" text="Remove" />
+                        <Menu text="Maximum">
+                           <items>
+                              <MenuItem fx:id="menuCalcMaxSize" mnemonicParsing="false" onAction="#onMenuCalcMaxSizeClicked" text="Size" />
+                              <MenuItem fx:id="menuCalcMaxDuration" mnemonicParsing="false" onAction="#onMenuCalcMaxDurationClicked" text="Duration" />
+                           </items>
+                        </Menu>
+                        <Menu text="Minimum">
+                           <items>
+                              <MenuItem fx:id="menuCalcMinSize" mnemonicParsing="false" onAction="#onMenuCalcMinSizeClicked" text="Size" />
+                           </items>
+                        </Menu>
+                        <Menu text="Average">
+                           <items>
+                              <MenuItem fx:id="menuCalcAvgSize" mnemonicParsing="false" onAction="#onMenuCalcAvgSizeClicked" text="Size" />
+                              <MenuItem fx:id="menuCalcAvgDuration" mnemonicParsing="false" onAction="#onMenuCalcAvgDurationClicked" text="Duration" />
+                           </items>
+                        </Menu>
                      </items>
                   </Menu>
-                <Menu text="Help">
-                  <items>
-                    <MenuItem fx:id="menuAbout" mnemonicParsing="false" onAction="#onMenuAboutClicked" text="About" />
-                  </items>
-                </Menu>
-              </menus>
-            </MenuBar>
-            <TableView fx:id="tableView" editable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="668.0" prefWidth="1195.0">
-              <columns>
-                <TableColumn fx:id="nameColumn" maxWidth="1.7976931348623157E308" minWidth="1.0" onEditCommit="#onEditCommit" prefWidth="75.0" text="Video" />
-                <TableColumn fx:id="pathColumn" maxWidth="1.7976931348623157E308" minWidth="1.0" onEditCommit="#onEditCommit" prefWidth="171.199951171875" text="Path" />
-                  <TableColumn fx:id="formatColumn" maxWidth="1.7976931348623157E308" minWidth="1.0" onEditCommit="#onEditCommit" prefWidth="115.19996643066406" text="Format" />
-                  <TableColumn fx:id="durationColumn" maxWidth="1.7976931348623157E308" minWidth="1.0" onEditCommit="#onEditCommit" prefWidth="142.4000244140625" text="Duration (mins)" />
-                  <TableColumn fx:id="vcodecColumn" maxWidth="1.7976931348623157E308" minWidth="1.0" onEditCommit="#onEditCommit" prefWidth="100.800048828125" text="Video Codec" />
-                  <TableColumn fx:id="acodecColumn" maxWidth="1.7976931348623157E308" minWidth="1.0" onEditCommit="#onEditCommit" prefWidth="144.0" text="Audio Codec" />
-                  <TableColumn fx:id="subtitlesColumn" maxWidth="1.7976931348623157E308" minWidth="1.0" onEditCommit="#onEditCommit" prefWidth="84.0" text="Subtitles" />
-                  <TableColumn fx:id="sizeColumn" maxWidth="1.7976931348623157E308" minWidth="1.0" onEditCommit="#onEditCommit" prefWidth="102.4000244140625" text="Size (MB)" />
-                  <TableColumn fx:id="playerColumn" maxWidth="1.7976931348623157E308" minWidth="1.0" onEditCommit="#onEditCommit" prefWidth="143.19998779296873" text="Player" />
-              </columns>
-               <columnResizePolicy>
-                  <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-               </columnResizePolicy>
-            </TableView>
-         </children>
-      </VBox>
-      <VBox fx:id="sidebar" layoutX="1122.0" prefHeight="708.0" prefWidth="141.0" spacing="30.0" styleClass="sidebarStyle" AnchorPane.rightAnchor="0.0">
+                  <SeparatorMenuItem mnemonicParsing="false" />
+                  <Menu text="Filter by">
+                     <items>
+                        <MenuItem fx:id="menuFBName" mnemonicParsing="false" onAction="#onMenuFBNameClicked" text="Name" />
+                        <MenuItem fx:id="menuFBFormat" mnemonicParsing="false" onAction="#onMenuFBFormatClicked" text="Format" />
+                        <MenuItem fx:id="menuFBPath" mnemonicParsing="false" onAction="#onMenuFBPathClicked" text="Path" />
+                        <MenuItem fx:id="menuFBDuration" mnemonicParsing="false" onAction="#onMenuFBDurationClicked" text="Duration" />
+                        <CheckMenuItem fx:id="menuFBSubtitles" mnemonicParsing="false" onAction="#onMenuFBSubtitlesChecked" text="Subtitles" />
+                     </items>
+                  </Menu>
+                  <Menu text="Sort by">
+                     <items>
+                        <MenuItem fx:id="menuSBSize" mnemonicParsing="false" onAction="#onMenuSBSizeClicked" text="Size" />
+                        <MenuItem fx:id="menuSBDuration" mnemonicParsing="false" onAction="#onMenuSBDurationClicked" text="Duration" />
+                        <MenuItem fx:id="menuSBFormat" mnemonicParsing="false" onAction="#onMenuSBFormatClicked" text="Format" />
+                     </items>
+                  </Menu>
+                  <Menu text="Group by">
+                     <items>
+                        <MenuItem fx:id="menuGBLongestVideos" mnemonicParsing="false" onAction="#onMenuGBLongestVideosClicked" text="Longest videos" />
+                        <MenuItem fx:id="menuGBAudioCodec" mnemonicParsing="false" onAction="#onMenuGBAudioCodecClicked" text="Audio Codec" />
+                        <MenuItem fx:id="menuGBVideoCodec" mnemonicParsing="false" onAction="#onMenuGBVideoCodecClicked" text="Video Codec" />
+                        <MenuItem fx:id="menuGBPlayer" mnemonicParsing="false" onAction="#onMenuGBPlayerClicked" text="Player" />
+                     </items>
+                  </Menu>
+            </items>
+          </Menu>
+            <Menu text="Videos">
+               <items>
+                  <MenuItem fx:id="menuVideosAdd" onAction="#onMenuVideosAddClicked" text="Add" />
+                  <MenuItem fx:id="menuVideosRemove" onAction="#onMenuVideosRemoveClicked" text="Remove" />
+               </items>
+            </Menu>
+          <Menu text="Help">
+            <items>
+              <MenuItem fx:id="menuAbout" mnemonicParsing="false" onAction="#onMenuAboutClicked" text="About" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+      <TableView fx:id="tableView" editable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="668.0" prefWidth="1195.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="25.0">
+        <columns>
+          <TableColumn fx:id="nameColumn" maxWidth="1.7976931348623157E308" minWidth="1.0" onEditCommit="#onEditCommit" prefWidth="75.0" text="Video" />
+          <TableColumn fx:id="pathColumn" maxWidth="1.7976931348623157E308" minWidth="1.0" onEditCommit="#onEditCommit" prefWidth="171.199951171875" text="Path" />
+            <TableColumn fx:id="formatColumn" maxWidth="1.7976931348623157E308" minWidth="1.0" onEditCommit="#onEditCommit" prefWidth="115.19996643066406" text="Format" />
+            <TableColumn fx:id="durationColumn" maxWidth="1.7976931348623157E308" minWidth="1.0" onEditCommit="#onEditCommit" prefWidth="142.4000244140625" text="Duration (mins)" />
+            <TableColumn fx:id="vcodecColumn" maxWidth="1.7976931348623157E308" minWidth="1.0" onEditCommit="#onEditCommit" prefWidth="100.800048828125" text="Video Codec" />
+            <TableColumn fx:id="acodecColumn" maxWidth="1.7976931348623157E308" minWidth="1.0" onEditCommit="#onEditCommit" prefWidth="144.0" text="Audio Codec" />
+            <TableColumn fx:id="subtitlesColumn" maxWidth="1.7976931348623157E308" minWidth="1.0" onEditCommit="#onEditCommit" prefWidth="84.0" text="Subtitles" />
+            <TableColumn fx:id="sizeColumn" maxWidth="1.7976931348623157E308" minWidth="1.0" onEditCommit="#onEditCommit" prefWidth="102.4000244140625" text="Size (MB)" />
+            <TableColumn fx:id="playerColumn" maxWidth="1.7976931348623157E308" minWidth="1.0" onEditCommit="#onEditCommit" prefWidth="143.19998779296873" text="Player" />
+        </columns>
+         <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+         </columnResizePolicy>
+      </TableView>
+      <VBox fx:id="sidebar" layoutX="1122.0" prefHeight="708.0" prefWidth="141.0" spacing="30.0" styleClass="sidebarStyle" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <Label alignment="BOTTOM_LEFT" prefHeight="58.0" prefWidth="62.0" text="Filter:">
                <VBox.margin>

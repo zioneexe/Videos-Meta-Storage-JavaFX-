@@ -24,6 +24,7 @@ public class VideoFile {
 
     /**
      * Getter for the property indicating whether the video has subtitles.
+     *
      * @return The BooleanProperty indicating if the video has subtitles.
      */
     public BooleanProperty hasSubtitlesProperty() {
@@ -32,6 +33,7 @@ public class VideoFile {
 
     /**
      * Getter for checking if the video has subtitles.
+     *
      * @return true if the video has subtitles, false otherwise.
      */
     public boolean ifHasSubtitles() {
@@ -44,6 +46,7 @@ public class VideoFile {
 
     /**
      * Getter for the name of the video.
+     *
      * @return The name of the video.
      */
     public String getName() {
@@ -52,6 +55,7 @@ public class VideoFile {
 
     /**
      * Setter for the name of the video.
+     *
      * @param name The new name for the video.
      */
     public void setName(String name) {
@@ -64,6 +68,7 @@ public class VideoFile {
 
     /**
      * Getter for the location of the video file.
+     *
      * @return The location of the video file.
      */
     public String getFileLocation() {
@@ -72,6 +77,7 @@ public class VideoFile {
 
     /**
      * Setter for the location of the video file.
+     *
      * @param fileLocation The new location for the video file.
      */
     public void setFileLocation(String fileLocation) {
@@ -84,6 +90,7 @@ public class VideoFile {
 
     /**
      * Getter for the format of the video file.
+     *
      * @return The format of the video file.
      */
     public String getFileFormat() {
@@ -92,6 +99,7 @@ public class VideoFile {
 
     /**
      * Setter for the format of the video file.
+     *
      * @param fileFormat The new format for the video file.
      */
     public void setFileFormat(String fileFormat) {
@@ -104,6 +112,7 @@ public class VideoFile {
 
     /**
      * Getter for the duration of the video file.
+     *
      * @return The duration of the video file in minutes.
      */
     public Double getFileDuration() {
@@ -112,6 +121,7 @@ public class VideoFile {
 
     /**
      * Setter for the duration of the video file.
+     *
      * @param fileDuration The new duration for the video file.
      */
     public void setFileDuration(Double fileDuration) {
@@ -124,6 +134,7 @@ public class VideoFile {
 
     /**
      * Getter for the video codec used in the video file.
+     *
      * @return The video codec used in the video file.
      */
     public String getVideoCodec() {
@@ -132,6 +143,7 @@ public class VideoFile {
 
     /**
      * Setter for the video codec used in the video file.
+     *
      * @param videoCodec The new video codec for the video file.
      */
     public void setVideoCodec(String videoCodec) {
@@ -144,6 +156,7 @@ public class VideoFile {
 
     /**
      * Getter for the audio codec used in the video file.
+     *
      * @return The audio codec used in the video file.
      */
     public String getAudioCodec() {
@@ -152,6 +165,7 @@ public class VideoFile {
 
     /**
      * Setter for the audio codec used in the video file.
+     *
      * @param audioCodec The new audio codec for the video file.
      */
     public void setAudioCodec(String audioCodec) {
@@ -164,6 +178,7 @@ public class VideoFile {
 
     /**
      * Getter for whether the video has subtitles or not.
+     *
      * @return "Yes" if the video has subtitles, "No" otherwise.
      */
     public String getHasSubtitles() {
@@ -172,6 +187,7 @@ public class VideoFile {
 
     /**
      * Setter for whether the video has subtitles or not.
+     *
      * @param hasSubtitles Boolean indicating whether the video has subtitles.
      */
     public void setHasSubtitles(Boolean hasSubtitles) {
@@ -184,6 +200,7 @@ public class VideoFile {
 
     /**
      * Getter for the size of the video file.
+     *
      * @return The size of the video file in megabytes.
      */
     public Double getVideoSize() {
@@ -192,6 +209,7 @@ public class VideoFile {
 
     /**
      * Setter for the size of the video file.
+     *
      * @param videoSize The new size for the video file.
      */
     public void setVideoSize(Double videoSize) {
@@ -204,6 +222,7 @@ public class VideoFile {
 
     /**
      * Getter for the player used for video playback.
+     *
      * @return The player used for video playback.
      */
     public String getPlayer() {
@@ -212,6 +231,7 @@ public class VideoFile {
 
     /**
      * Setter for the player used for video playback.
+     *
      * @param player The new player for video playback.
      */
     public void setPlayer(String player) {
@@ -221,7 +241,8 @@ public class VideoFile {
     //------------------------------------------------------------------------------------------
 
     // Default constructor for VideoFile class.
-    public VideoFile() {}
+    public VideoFile() {
+    }
 
     // Parameterized constructor for creating a VideoFile with specified properties.
     public VideoFile(String name, String fileLocation, String fileFormat, Double fileDuration,
@@ -270,23 +291,22 @@ public class VideoFile {
 
     /**
      * Override the toString() method to provide a string representation of the VideoFile object.
+     *
      * @return String representation of the VideoFile object.
      */
     @Override
     public String toString() {
-        StringBuilder stringRepresentation = new StringBuilder();
 
         // Build a string representation including various properties of the video.
-        stringRepresentation.append(getName()).append(";");
-        stringRepresentation.append(getFileLocation()).append(";");
-        stringRepresentation.append(getFileFormat()).append(";");
-        stringRepresentation.append(convertMinutesToTime(getFileDuration())).append(";");
-        stringRepresentation.append(getVideoCodec()).append(";");
-        stringRepresentation.append(getAudioCodec()).append(";");
-        stringRepresentation.append(hasSubtitles.get() ? "Yes" : "No").append(";");
-        stringRepresentation.append(getVideoSize()).append(";");
-        stringRepresentation.append(getPlayer()).append(",\n");
 
-        return stringRepresentation.toString();
+        return getName() + ";" +
+                getFileLocation() + ";" +
+                getFileFormat() + ";" +
+                convertMinutesToTime(getFileDuration()) + ";" +
+                getVideoCodec() + ";" +
+                getAudioCodec() + ";" +
+                (hasSubtitles.get() ? "Yes" : "No") + ";" +
+                getVideoSize() + ";" +
+                getPlayer() + ",\n";
     }
 }

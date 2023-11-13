@@ -41,7 +41,9 @@ import static com.example.courseworkfx.dialogs.InvalidDataAlert.showInvalidDataA
  */
 public class CourseworkController implements Initializable, Constants {
 
-    // Enumeration for filtering options
+    /**
+     * Enumeration for filtering options
+     */
     public enum FilterType {
         NAME,
         DURATION,
@@ -49,7 +51,10 @@ public class CourseworkController implements Initializable, Constants {
         PATH,
     }
 
-    // Enumeration for grouping options
+    /**
+     * Enumeration for grouping options
+     */
+
     public enum GroupingType {
         AUDIO_CODEC,
         VIDEO_CODEC,
@@ -57,6 +62,9 @@ public class CourseworkController implements Initializable, Constants {
         LONGEST_VIDEOS
     }
 
+    //------------------------------------------------------------------------------------------
+
+    // sidebar transition instance
     private TranslateTransition sidebarTransition;
 
     // FXML elements injected by the FXMLLoader
@@ -86,76 +94,7 @@ public class CourseworkController implements Initializable, Constants {
     private ImageView buttonWrite;
 
     @FXML
-    private ResourceBundle resources;
-
-    @FXML
-    private URL location;
-
-    @FXML
-    private MenuItem menuAbout;
-
-    @FXML
-    private MenuItem menuCalcAvgDuration;
-
-    @FXML
-    private MenuItem menuCalcAvgSize;
-
-    @FXML
-    private MenuItem menuCalcMaxDuration;
-
-    @FXML
-    private MenuItem menuCalcMaxSize;
-
-    @FXML
-    private MenuItem menuCalcMinSize;
-
-    @FXML
-    private MenuItem menuFBDuration;
-
-    @FXML
-    private MenuItem menuFBFormat;
-
-    @FXML
-    private MenuItem menuFBPath;
-
-    @FXML
-    private MenuItem menuFBName;
-
-    @FXML
     private CheckMenuItem menuFBSubtitles;
-
-    @FXML
-    private MenuItem menuGBAudioCodec;
-
-    @FXML
-    private MenuItem menuGBVideoCodec;
-
-    @FXML
-    private MenuItem menuGBPlayer;
-
-    @FXML
-    private MenuItem menuGBLongestVideos;
-
-    @FXML
-    private MenuItem menuRead;
-
-    @FXML
-    private MenuItem menuSBDuration;
-
-    @FXML
-    private MenuItem menuSBSize;
-
-    @FXML
-    private MenuItem menuSBFormat;
-
-    @FXML
-    private MenuItem menuSave;
-
-    @FXML
-    private MenuItem menuVideosAdd;
-
-    @FXML
-    private MenuItem menuVideosRemove;
 
     @FXML
     private TableView<VideoFile> tableView;
@@ -194,7 +133,25 @@ public class CourseworkController implements Initializable, Constants {
 
     private VideoFile selectedFile;
 
+    //------------------------------------------------------------------------------------------
+
     // Methods annotated with @FXML handle various UI events
+
+    @FXML
+    private void toggleSidebar() {
+        // Function for hiding/showing menu sidebar
+        if (sidebarTransition.getStatus() == Animation.Status.RUNNING) {
+            // If the transition is currently running, do nothing
+            return;
+        }
+
+        double sidebarWidth = sidebar.getWidth();
+        double targetTranslateX = (sidebar.getTranslateX() == sidebarWidth + 142) ? 0 : sidebarWidth + 142;
+
+        sidebarTransition.setFromX(sidebar.getTranslateX());
+        sidebarTransition.setToX(targetTranslateX);
+        sidebarTransition.play();
+    }
 
     @FXML
     void onMenuAboutClicked(ActionEvent event) {
@@ -229,20 +186,6 @@ public class CourseworkController implements Initializable, Constants {
         stage.close();
     }
 
-    private void callSaveDialog(Alert alert) {
-        alert.showAndWait().ifPresent(response -> {
-            if (response == ButtonType.OK) {
-                // If the user clicks OK, open the SaveFileDialog to save the data
-                SaveFileDialog saveDialog = new SaveFileDialog(tableView);
-                try {
-                    saveDialog.start(new Stage());
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        });
-    }
-
     @FXML
     void onImageHelpClicked(MouseEvent event) {
         // Open the documentation when the "Help" image is clicked
@@ -263,7 +206,6 @@ public class CourseworkController implements Initializable, Constants {
 
     @FXML
     void onMenuCalcAvgDurationClicked(ActionEvent event) throws Exception {
-        // Calculate and display the average duration of video files
         ObservableList<VideoFile> videos = tableView.getItems();
         try {
             if (videos.isEmpty()) {
@@ -281,19 +223,12 @@ public class CourseworkController implements Initializable, Constants {
         }
         result /= videos.size();
 
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Information Dialog");
-        alert.setHeaderText("Average video file duration.");
-        alert.setContentText("The calculated result is: " + String.format(Locale.US, "%.3f", result) + " min(s)");
-
-        alert.getButtonTypes().setAll(javafx.scene.control.ButtonType.OK);
-
-        alert.showAndWait();
+        showAlert("Average video file duration.",
+                "The calculated result is: " + String.format(Locale.US, "%.3f", result) + " min(s)");
     }
 
     @FXML
     void onMenuCalcAvgSizeClicked(ActionEvent event) throws Exception {
-        // Calculate and display the average size of video files
         ObservableList<VideoFile> videos = tableView.getItems();
         try {
             if (videos.isEmpty()) {
@@ -311,19 +246,12 @@ public class CourseworkController implements Initializable, Constants {
         }
         result /= videos.size();
 
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Information Dialog");
-        alert.setHeaderText("Average video file size.");
-        alert.setContentText("The calculated result is: " + String.format(Locale.US, "%.3f", result) + " MB");
-
-        alert.getButtonTypes().setAll(javafx.scene.control.ButtonType.OK);
-
-        alert.showAndWait();
+        showAlert("Average video file size.",
+                "The calculated result is: " + String.format(Locale.US, "%.3f", result) + " MB");
     }
 
     @FXML
     void onMenuCalcMaxDurationClicked(ActionEvent event) throws Exception {
-        // Calculate and display the maximum duration of video files
         ObservableList<VideoFile> videos = tableView.getItems();
         try {
             if (videos.isEmpty()) {
@@ -340,19 +268,12 @@ public class CourseworkController implements Initializable, Constants {
             if (file.getFileDuration() > result) result = file.getFileDuration();
         }
 
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Information Dialog");
-        alert.setHeaderText("Maximum video file duration.");
-        alert.setContentText("The calculated result is: " + result + " min(s)");
-
-        alert.getButtonTypes().setAll(javafx.scene.control.ButtonType.OK);
-
-        alert.showAndWait();
+        showAlert("Maximum video file duration.",
+                "The calculated result is: " + result + " min(s)");
     }
 
     @FXML
     void onMenuCalcMaxSizeClicked(ActionEvent event) throws Exception {
-        // Calculate and display the maximum size of video files
         ObservableList<VideoFile> videos = tableView.getItems();
         try {
             if (videos.isEmpty()) {
@@ -368,19 +289,12 @@ public class CourseworkController implements Initializable, Constants {
             if (file.getVideoSize() > result) result = file.getVideoSize();
         }
 
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Information Dialog");
-        alert.setHeaderText("Maximum video file size.");
-        alert.setContentText("The calculated result is: " + result + " MB");
-
-        alert.getButtonTypes().setAll(javafx.scene.control.ButtonType.OK);
-
-        alert.showAndWait();
+        showAlert("Maximum video file size.",
+                "The calculated result is: " + result + " MB");
     }
 
     @FXML
     void onMenuCalcMinSizeClicked(ActionEvent event) throws Exception {
-        // Calculate and display the minimum size of video files
         ObservableList<VideoFile> videos = tableView.getItems();
         try {
             if (videos.isEmpty()) {
@@ -397,14 +311,8 @@ public class CourseworkController implements Initializable, Constants {
             if (file.getVideoSize() < result) result = file.getVideoSize();
         }
 
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Information Dialog");
-        alert.setHeaderText("Minimum video file size.");
-        alert.setContentText("The calculated result is: " + result + " MB");
-
-        alert.getButtonTypes().setAll(javafx.scene.control.ButtonType.OK);
-
-        alert.showAndWait();
+        showAlert("Minimum video file size.",
+                "The calculated result is: " + result + " MB");
     }
 
     @FXML
@@ -440,19 +348,7 @@ public class CourseworkController implements Initializable, Constants {
         // Filter video files based on the subtitles checkbox
         boolean subtitlesChecked = menuFBSubtitles.isSelected();
 
-        ObservableList<VideoFile> filteredList = FXCollections.observableArrayList();
-
-        if (subtitlesChecked) {
-            for (VideoFile videoFile : dataList) {
-                if (videoFile.ifHasSubtitles()) {
-                    filteredList.add(videoFile);
-                }
-            }
-        } else {
-            filteredList.addAll(dataList);
-        }
-
-        tableView.setItems(filteredList);
+        GroupedTable.checkGroupForSubtitles(subtitlesChecked, tableView, dataList);
     }
 
     @FXML
@@ -545,20 +441,6 @@ public class CourseworkController implements Initializable, Constants {
         tableView.setItems(videos);
     }
 
-    static <T> void shellSort(ObservableList<T> list, Comparator<T> comparing) {
-        // Implementation of shell sort algorithm
-        for (int d = list.size() / 2; d >= 1; d /= 2) {
-            for (int i = d; i < list.size(); ++i) {
-                T key = list.get(i);
-                int j;
-                for (j = i; j >= d && comparing.compare(list.get(j - d), key) > 0; j -= d) {
-                    list.set(j, list.get(j - d));
-                }
-                list.set(j, key);
-            }
-        }
-    }
-
     @FXML
     void onMenuSaveClicked(ActionEvent event) throws Exception {
         // Write video data to a file
@@ -577,6 +459,71 @@ public class CourseworkController implements Initializable, Constants {
         deleteVideo();
     }
 
+    //------------------------------------------------------------------------------------------
+
+    /**
+     * Displays a confirmation alert and opens the SaveFileDialog if the user agrees.
+     *
+     * @param alert The confirmation alert.
+     */
+    private void callSaveDialog(Alert alert) {
+        alert.showAndWait().ifPresent(response -> {
+            if (response == ButtonType.OK) {
+                // If OK is clicked, open the SaveFileDialog to save the data
+                SaveFileDialog saveDialog = new SaveFileDialog(tableView);
+                try {
+                    saveDialog.start(new Stage());
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+    }
+
+    /**
+     * Displays an information alert with the specified header and content.
+     *
+     * @param header  The header text for the information alert.
+     * @param content The content text for the information alert.
+     */
+    private void showAlert(String header, String content) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Information Dialog");
+        alert.setHeaderText(header);
+        alert.setContentText(content);
+
+        // Set the alert to have only the OK button
+        alert.getButtonTypes().setAll(javafx.scene.control.ButtonType.OK);
+
+        // Show the alert and wait for user interaction
+        alert.showAndWait();
+    }
+
+    // Implementation of shell sort algorithm
+    static <T> void shellSort(ObservableList<T> list, Comparator<T> comparing) {
+        for (int d = list.size() / 2; d >= 1; d /= 2) {
+            for (int i = d; i < list.size(); ++i) {
+                T key = list.get(i);
+                int j;
+                for (j = i; j >= d && comparing.compare(list.get(j - d), key) > 0; j -= d) {
+                    list.set(j, list.get(j - d));
+                }
+                list.set(j, key);
+            }
+        }
+    }
+
+    /**
+     * Reads video data from a file and updates the table.
+     *
+     * <p>
+     * If the table is not empty, a warning dialog is displayed to confirm the operation,
+     * as reading from a file might corrupt existing data. If the user proceeds, a {@link ReadFileDialog}
+     * is launched to handle the reading process.
+     * </p>
+     *
+     * @throws Exception If an exception occurs during the file reading process.
+     */
     void readFromFile() throws Exception {
         // Read video data from a file, providing a warning if the table is not empty
         if (!tableView.getItems().isEmpty()) {
@@ -601,6 +548,17 @@ public class CourseworkController implements Initializable, Constants {
         }
     }
 
+    /**
+     * Writes video data to a file.
+     *
+     * <p>
+     * If the table is empty, a warning dialog is displayed to inform the user that they
+     * are attempting to write an empty table to a file. If the user proceeds, a {@link SaveFileDialog}
+     * is launched to handle the writing process.
+     * </p>
+     *
+     * @throws IOException If an I/O exception occurs during the file writing process.
+     */
     void writeToFile() throws IOException {
         // Write video data to a file, providing a warning if the table is empty
         if (tableView.getItems().isEmpty()) {
@@ -616,62 +574,59 @@ public class CourseworkController implements Initializable, Constants {
         }
     }
 
-    // Method to open documentation using the default system application
+    /**
+     * Opens the documentation using the default system application.
+     */
     void openDocumentation() {
         try {
-            // Create a File object representing the documentation file
             File fileToOpen = new File(DOCUMENTATION_PATH);
 
-            // Check if the Desktop API is supported (common on desktop environments)
             if (Desktop.isDesktopSupported()) {
                 Desktop desktop = Desktop.getDesktop();
 
-                // Check if the file exists and is a regular file
                 if (fileToOpen.exists() && fileToOpen.isFile()) {
-                    // Open the file with the default system application
                     desktop.open(fileToOpen);
                 }
             }
         } catch (IOException e) {
-            // Print the stack trace if an exception occurs during file opening
             System.out.println(e.getMessage());
         }
     }
 
-    // Method to add a video by showing the add video dialog
+    /**
+     * Adds a video by showing the add video dialog.
+     *
+     * @throws RuntimeException If an IOException occurs during the execution.
+     */
     void addVideo() {
         try {
-            // Show the add video dialog
             showAddDialog();
         } catch (IOException e) {
-            // Wrap the IOException in a RuntimeException and throw it
             throw new RuntimeException(e);
         }
     }
 
-    // Method to delete a video, handling exceptions
+    /**
+     * Deletes a video, handling exceptions.
+     *
+     * @throws Exception If an exception occurs during the execution.
+     */
     void deleteVideo() throws Exception {
         try {
-            // Check if the table is empty
             if (tableView.getItems().isEmpty()) {
-                // Show an alert for an empty table and throw an EmptyTableException
                 showEmptyTableAlert();
                 throw new EmptyTableException();
             }
         } catch (EmptyTableException e) {
-            // Print the exception message and return from the method
             System.out.println(e.getMessage());
             return;
         }
 
-        // Check if a video is selected for deletion
         if (selectedFile != null) {
-            // Remove the selected video from the table
             tableView.getItems().remove(selectedFile);
             tableView.getSelectionModel().clearSelection();
             selectedFile = null;
         } else {
-            // If no video is selected, show an error alert
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Oooh..");
             alert.setContentText("It seems that no item is selected.");
@@ -679,48 +634,52 @@ public class CourseworkController implements Initializable, Constants {
         }
     }
 
-    // Method to initialize the controller
+    //------------------------------------------------------------------------------------------
+
+    /**
+     * Initializes the controller.
+     *
+     * <p>
+     * This method is called automatically by JavaFX after the root element of the FXML file
+     * has been completely processed. It sets up various components, including images and tooltips
+     * for buttons, cell value factories for table columns, event handlers for TableView clicks,
+     * a context menu for table rows, and styles for table columns.
+     * </p>
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        // Set images for buttons and tooltips
         setImagesAndTooltips();
-
-        // Make the TableView editable
         tableView.setEditable(true);
-
-        // Set cell value factories for each TableColumn
         setCellValueFactories();
-
-        // Set event handlers for TableView clicks
         setTableViewEventHandlers();
-
-        // Set up context menu for TableView rows
         setRowContextMenu();
-
-        // Set column styles and cell factories
         setColumnStylesAndFactories();
-
-        // Set up data list and add listener for the filter text field
         initializeDataListAndFilterListener();
+        setSidebarTransition();
+    }
 
+    /**
+     * Sets up the sidebar transition animation.
+     */
+    private void setSidebarTransition() {
         sidebar.setTranslateX(0);
         sidebarTransition = new TranslateTransition(Duration.seconds(0.3), sidebar);
         sidebarTransition.setDuration(Duration.seconds(0.5));
         sidebarTransition.setInterpolator(Interpolator.EASE_BOTH);
     }
 
-    // Method to set images for buttons and tooltips
+    /**
+     * Sets images and tooltips for buttons.
+     */
     private void setImagesAndTooltips() {
-        // Set images for buttons
         setButtonImages();
-
-        // Set tooltips for buttons
         setButtonTooltips();
     }
 
-    // Method to set images for buttons
+    /**
+     * Sets images for buttons.
+     */
     private void setButtonImages() {
-        // Load images and set them to corresponding buttons
         buttonAdd.setImage(new Image(IMAGE_ADD_FILEPATH));
         buttonDelete.setImage(new Image(IMAGE_DELETE_FILEPATH));
         buttonRead.setImage(new Image(IMAGE_READ_FILEPATH));
@@ -729,9 +688,10 @@ public class CourseworkController implements Initializable, Constants {
         buttonExit.setImage(new Image(IMAGE_EXIT_FILEPATH));
     }
 
-    // Method to set tooltips for buttons
+    /**
+     * Sets tooltips for buttons.
+     */
     private void setButtonTooltips() {
-        // Create tooltips and install them for each button
         Tooltip.install(buttonAdd, new Tooltip("Manually add a videofile to the table."));
         Tooltip.install(buttonDelete, new Tooltip("Delete selected videofile."));
         Tooltip.install(buttonRead, new Tooltip("Read videofiles data from .txt file."));
@@ -740,9 +700,10 @@ public class CourseworkController implements Initializable, Constants {
         Tooltip.install(buttonExit, new Tooltip("Close the application."));
     }
 
-    // Method to set cell value factories for each TableColumn
+    /**
+     * Sets cell value factories for each TableColumn.
+     */
     private void setCellValueFactories() {
-        // Set PropertyValueFactory for each TableColumn
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         pathColumn.setCellValueFactory(new PropertyValueFactory<>("fileLocation"));
         formatColumn.setCellValueFactory(new PropertyValueFactory<>("fileFormat"));
@@ -755,31 +716,34 @@ public class CourseworkController implements Initializable, Constants {
         subtitlesColumn.setCellValueFactory(cellData -> cellData.getValue().hasSubtitlesProperty());
     }
 
-    // Method to set event handlers for TableView clicks
+    /**
+     * Sets event handlers for TableView clicks.
+     */
     private void setTableViewEventHandlers() {
-        // Set click event handlers for single and double clicks on TableView
         setSingleClickEventHandler();
         setDoubleClickEventHandler();
     }
 
-    // Method to set single click event handler for TableView
+    /**
+     * Sets single click event handler for TableView.
+     */
     private void setSingleClickEventHandler() {
         tableView.setOnMouseClicked(event -> {
             if (event.getClickCount() == 1) {
-                // Handle single click on TableView
                 selectedFile = tableView.getSelectionModel().getSelectedItem();
             }
         });
     }
 
-    // Method to set double click event handler for TableView
+    /**
+     * Sets double click event handler for TableView.
+     */
     private void setDoubleClickEventHandler() {
         tableView.addEventFilter(MouseEvent.MOUSE_CLICKED, event -> {
             if (event.getClickCount() == 2) {
                 int clickedIndex = tableView.getSelectionModel().getSelectedIndex();
                 if (clickedIndex == -1) {
                     try {
-                        // Handle double click on TableView when no item is selected
                         showAddDialog();
                     } catch (IOException e) {
                         throw new RuntimeException(e);
@@ -789,16 +753,21 @@ public class CourseworkController implements Initializable, Constants {
         });
     }
 
-    // Method to set up context menu for TableView rows
+
+    /**
+     * Sets up the context menu for TableView rows.
+     * <p>
+     * Creates context menu items for 'Add' and 'Delete', sets corresponding actions,
+     * and associates them with a context menu. The context menu is then displayed on
+     * right-click for each TableView row.
+     * </p>
+     */
     private void setRowContextMenu() {
-        // Create context menu items
         MenuItem addItem = new MenuItem("Add");
         MenuItem deleteItem = new MenuItem("Delete");
 
-        // Set actions for context menu items
         addItem.setOnAction(event -> {
             try {
-                // Handle 'Add' context menu item
                 showAddDialog();
             } catch (IOException e) {
                 throw new RuntimeException(e);
@@ -806,28 +775,32 @@ public class CourseworkController implements Initializable, Constants {
         });
 
         deleteItem.setOnAction(event -> {
-            // Handle 'Delete' context menu item
             VideoFile selectedItem = tableView.getSelectionModel().getSelectedItem();
             if (selectedItem != null) {
                 tableView.getItems().remove(selectedItem);
             }
         });
 
-        // Create context menu and add items
         ContextMenu rowContextMenu = new ContextMenu();
         rowContextMenu.getItems().addAll(addItem, deleteItem);
 
-        // Set row factory to show context menu on right-click
         setRowFactoryForContextMenu(rowContextMenu);
     }
 
-    // Method to set row factory for TableView to show context menu on right-click
+    /**
+     * Sets the row factory for TableView to show the context menu on right-click.
+     * <p>
+     * Associates the given context menu with the row factory to show the context menu
+     * on right-click for each TableView row.
+     * </p>
+     *
+     * @param rowContextMenu The context menu to be shown on right-click.
+     */
     private void setRowFactoryForContextMenu(ContextMenu rowContextMenu) {
         tableView.setRowFactory(tv -> {
             TableRow<VideoFile> row = new TableRow<>();
             row.setOnMouseClicked(event -> {
                 if (!row.isEmpty() && event.getButton() == MouseButton.SECONDARY) {
-                    // Show context menu on right-click
                     rowContextMenu.show(row, event.getScreenX(), event.getScreenY());
                 }
             });
@@ -835,24 +808,32 @@ public class CourseworkController implements Initializable, Constants {
         });
     }
 
-    // Method to set column styles and cell factories
+    /**
+     * Sets column styles and cell factories.
+     * <p>
+     * Sets alignment styles for specific columns and cell factories for editable columns.
+     * </p>
+     */
     private void setColumnStylesAndFactories() {
-        // Set alignment styles for specific columns
-        formatColumn.setStyle("-fx-alignment: CENTER;");
-        durationColumn.setStyle("-fx-alignment: CENTER;");
-        subtitlesColumn.setStyle("-fx-alignment: CENTER;");
-        sizeColumn.setStyle("-fx-alignment: CENTER;");
-        vcodecColumn.setStyle("-fx-alignment: CENTER;");
-        acodecColumn.setStyle("-fx-alignment: CENTER;");
-        playerColumn.setStyle("-fx-alignment: CENTER;");
+        formatColumn.getStyleClass().add("center-aligned-column");
+        durationColumn.getStyleClass().add("center-aligned-column");
+        subtitlesColumn.getStyleClass().add("center-aligned-column");
+        sizeColumn.getStyleClass().add("center-aligned-column");
+        vcodecColumn.getStyleClass().add("center-aligned-column");
+        acodecColumn.getStyleClass().add("center-aligned-column");
+        playerColumn.getStyleClass().add("center-aligned-column");
 
-        // Set cell factories for specific columns
         setCellFactoriesForColumns();
     }
 
-    // Method to set cell factories for specific columns
+    /**
+     * Sets cell factories for specific columns.
+     * <p>
+     * Sets cell factories for editable columns, including text fields for string columns,
+     * text fields with a custom converter for numeric columns, and checkboxes for boolean columns.
+     * </p>
+     */
     private void setCellFactoriesForColumns() {
-        // Set cell factories for editable columns
         nameColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         pathColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         formatColumn.setCellFactory(TextFieldTableCell.forTableColumn());
@@ -864,14 +845,19 @@ public class CourseworkController implements Initializable, Constants {
         subtitlesColumn.setCellFactory(CheckBoxTableCell.forTableColumn(subtitlesColumn));
     }
 
-    // Method to initialize data list and add listener for the filter text field
+    /**
+     * Initializes the data list and adds a listener for the filter text field.
+     * <p>
+     * Initializes the data list from the TableView and adds a listener for the filter text field.
+     * The listener updates the displayed data based on the filter text.
+     * </p>
+     */
     private void initializeDataListAndFilterListener() {
-        // Initialize data list from TableView
         dataList = tableView.getItems();
-
-        // Add listener for the filter text field
         filterTextField.textProperty().addListener((observable, oldValue, newValue) -> filterData(newValue));
     }
+
+    //------------------------------------------------------------------------------------------
 
     /**
      * Filters the data in the TableView based on the provided filter.
@@ -937,21 +923,11 @@ public class CourseworkController implements Initializable, Constants {
 
         AddDialogController dialogController = fxmlLoader.getController();
         dialogController.setCourseworkController(this);
-    }
 
-    @FXML
-    private void toggleSidebar() {
-        if (sidebarTransition.getStatus() == Animation.Status.RUNNING) {
-            // If the transition is currently running, do nothing
-            return;
-        }
-
-        double sidebarWidth = sidebar.getWidth();
-        double targetTranslateX = (sidebar.getTranslateX() == sidebarWidth + 142) ? 0 : sidebarWidth + 142;
-
-        sidebarTransition.setFromX(sidebar.getTranslateX());
-        sidebarTransition.setToX(targetTranslateX);
-        sidebarTransition.play();
+        Stage mainStage = (Stage) tableView.getScene().getWindow();
+        mainStage.setOnCloseRequest(event -> {
+            dialogController.handleCloseRequest();
+        });
     }
 
     /**

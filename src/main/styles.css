@@ -1,7 +1,0 @@
-.sidebarStyle {
-    -fx-border-color: lightgray; /* Border color */
-    -fx-border-width: 1px;   /* Border width */
-    -fx-border-radius: 2px;  /* Border corner radius */
-    -fx-background-color: white; /* Background color for visibility */
-    -fx-opacity: 1.0; /* Set opacity to 1.0 (fully opaque) */
-}

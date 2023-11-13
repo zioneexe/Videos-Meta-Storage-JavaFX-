@@ -2,16 +2,10 @@ package com.example.courseworkfx;
 
 import com.example.courseworkfx.exceptions.InvalidDataException;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-
-import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
 
 import static com.example.courseworkfx.dialogs.InvalidDataAlert.showInvalidDataAlert;
 
@@ -19,7 +13,7 @@ import static com.example.courseworkfx.dialogs.InvalidDataAlert.showInvalidDataA
  * The `AddDialogController` class controls the behavior of the dialog for adding a new video file.
  * It implements the Initializable interface to initialize the controller after its root element has been completely processed.
  */
-public class AddDialogController implements Initializable, Constants {
+public class AddDialogController implements Constants {
 
     @FXML
     private Button buttonSubmit;
@@ -51,6 +45,7 @@ public class AddDialogController implements Initializable, Constants {
     @FXML
     private TextField textFieldVCodec;
 
+    // instance of main controller class
     private CourseworkController courseworkController;
 
     /**
@@ -61,6 +56,8 @@ public class AddDialogController implements Initializable, Constants {
     public void setCourseworkController(CourseworkController courseworkController) {
         this.courseworkController = courseworkController;
     }
+
+    //------------------------------------------------------------------------------------------
 
     /**
      * Handles the event when the submit button is clicked.
@@ -106,6 +103,8 @@ public class AddDialogController implements Initializable, Constants {
         }
     }
 
+    //------------------------------------------------------------------------------------------
+
     /**
      * Parses a string input to a Double, handling invalid data exceptions.
      *
@@ -122,20 +121,15 @@ public class AddDialogController implements Initializable, Constants {
     }
 
     /**
-     * Initializes the controller after its root element has been completely processed.
-     *
-     * @param url            The location used to resolve relative paths for the root object, or null if the location is not known.
-     * @param resourceBundle The resources used to localize the root object, or null if the root object was not localized.
+     * Handles the close request for the dialog.
+     * It is triggered when the user attempts to close the dialog window.
+     * Closes the dialog window, releasing associated resources.
      */
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        // Load the coursework controller from FXML and set it in the dialog controller
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("coursework-view.fxml"));
-        try {
-            fxmlLoader.load();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        setCourseworkController(fxmlLoader.getController());
+    void handleCloseRequest() {
+        // Obtain a reference to the stage (window) containing the button
+        Stage stage = (Stage) buttonSubmit.getScene().getWindow();
+
+        // Close the dialog window
+        stage.close();
     }
 }

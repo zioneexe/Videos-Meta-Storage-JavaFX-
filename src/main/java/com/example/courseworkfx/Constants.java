@@ -10,6 +10,8 @@ public interface Constants {
     int APP_WIDTH = 1100;
     int APP_HEIGHT = 700;
 
+    //------------------------------------------------------------------------------------------
+
     // File paths for icons and images
     String ICON_FILEPATH = "C:\\Users\\w3stn\\IdeaProjects\\CourseworkFX\\assets\\icon.png";
     String CHOOSE_FILEPATH = "C:\\Users\\w3stn\\IdeaProjects\\CourseworkFX\\";

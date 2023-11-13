@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 
 import com.example.courseworkfx.CourseworkController.GroupingType;
+
 import static com.example.courseworkfx.CourseworkController.shellSort;
 import static com.example.courseworkfx.dialogs.EmptyTableAlert.showEmptyTableAlert;
 
@@ -25,7 +26,7 @@ import static com.example.courseworkfx.dialogs.EmptyTableAlert.showEmptyTableAle
  * The `GroupedTable` class represents a JavaFX application to display and manipulate a grouped table of VideoFile objects.
  */
 public class GroupedTable extends Application implements Constants {
-    private ArrayList<TableView<VideoFile>> groupTables = new ArrayList<>();
+    private final ArrayList<TableView<VideoFile>> GROUP_TABLES = new ArrayList<>();
     private ObservableList<VideoFile> videoFiles;
 
     MenuBar menuBar;
@@ -38,42 +39,61 @@ public class GroupedTable extends Application implements Constants {
     MenuItem menuCalcMinSize;
     Menu filterMenu;
     CheckMenuItem menuFBSubtitles;
-    private GroupingType groupingType;
+    private final GroupingType GROUPING_TYPE;
 
     /**
      * Constructor for `GroupedTable` class.
-     * @param videoFiles The list of VideoFile objects to be displayed.
+     *
+     * @param videoFiles   The list of VideoFile objects to be displayed.
      * @param groupingType The grouping type used for categorizing the videos.
      */
     public GroupedTable(ObservableList<VideoFile> videoFiles, GroupingType groupingType) {
         this.videoFiles = videoFiles;
-        this.groupingType = groupingType;
+        this.GROUPING_TYPE = groupingType;
     }
 
-    // Method to handle the action when subtitles are checked in the menu.
+    /**
+     * Method to handle the action when subtitles are checked in the menu.
+     */
     void onMenuFBSubtitlesChecked() {
         boolean subtitlesChecked = menuFBSubtitles.isSelected();
-        for (TableView<VideoFile> tableView : groupTables) {
-            ObservableList<VideoFile> filteredList = FXCollections.observableArrayList();
-
-            if (subtitlesChecked) {
-                for (VideoFile videoFile : videoFiles) {
-                    if (videoFile.ifHasSubtitles()) {
-                        filteredList.add(videoFile);
-                    }
-                }
-            } else {
-                filteredList.addAll(videoFiles);
-            }
-
-            tableView.setItems(filteredList);
+        for (TableView<VideoFile> tableView : GROUP_TABLES) {
+            checkGroupForSubtitles(subtitlesChecked, tableView, videoFiles);
         }
     }
 
-    // Method to handle the action when "Calculate Max Size" menu item is clicked.
+    /**
+     * Static method to check the group for subtitles and update the TableView accordingly.
+     *
+     * @param subtitlesChecked Boolean indicating whether subtitles are checked.
+     * @param tableView        The TableView to be updated.
+     * @param videoFiles       The list of VideoFile objects.
+     */
+    static void checkGroupForSubtitles(boolean subtitlesChecked, TableView<VideoFile> tableView,
+                                       ObservableList<VideoFile> videoFiles) {
+        ObservableList<VideoFile> filteredList = FXCollections.observableArrayList();
+
+        if (subtitlesChecked) {
+            for (VideoFile videoFile : videoFiles) {
+                if (videoFile.ifHasSubtitles()) {
+                    filteredList.add(videoFile);
+                }
+            }
+        } else {
+            filteredList.addAll(videoFiles);
+        }
+
+        tableView.setItems(filteredList);
+    }
+
+    /**
+     * Method to handle the action when "Calculate Max Size" menu item is clicked.
+     *
+     * @throws Exception If an exception occurs during the calculation.
+     */
     void onMenuCalcMaxSizeClicked() throws Exception {
         ArrayList<Double> resultsArray = new ArrayList<>();
-        for (TableView<VideoFile> tableView : groupTables) {
+        for (TableView<VideoFile> tableView : GROUP_TABLES) {
             ObservableList<VideoFile> videos = tableView.getItems();
             try {
                 if (videos.isEmpty()) {
@@ -92,6 +112,20 @@ public class GroupedTable extends Application implements Constants {
         }
 
         // Build a string representation of the calculated results.
+        Alert alert = getAlert(resultsArray, "Maximum video file size.");
+
+        alert.getButtonTypes().setAll(javafx.scene.control.ButtonType.OK);
+        alert.showAndWait();
+    }
+
+    /**
+     * Private static method to create an alert with calculated results.
+     *
+     * @param resultsArray The list of calculated results.
+     * @param titleString  The title for the alert.
+     * @return An Alert object.
+     */
+    private static Alert getAlert(ArrayList<Double> resultsArray, String titleString) {
         StringBuilder resultsString = new StringBuilder();
         for (int i = 0; i < resultsArray.size(); i++) {
             resultsString.append(resultsArray.get(i));
@@ -103,17 +137,19 @@ public class GroupedTable extends Application implements Constants {
         // Display an information dialog with the calculated result.
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Information Dialog");
-        alert.setHeaderText("Maximum video file size.");
+        alert.setHeaderText(titleString);
         alert.setContentText("The calculated result is: " + resultsString + " MBs");
-
-        alert.getButtonTypes().setAll(javafx.scene.control.ButtonType.OK);
-        alert.showAndWait();
+        return alert;
     }
 
-    // Method to handle the action when "Calculate Min Size" menu item is clicked.
+    /**
+     * Method to handle the action when "Calculate Min Size" menu item is clicked.
+     *
+     * @throws Exception If an exception occurs during the calculation.
+     */
     void onMenuCalcMinSizeClicked() throws Exception {
         ArrayList<Double> resultsArray = new ArrayList<>();
-        for (TableView<VideoFile> tableView : groupTables) {
+        for (TableView<VideoFile> tableView : GROUP_TABLES) {
             ObservableList<VideoFile> videos = tableView.getItems();
             try {
                 if (videos.isEmpty()) {
@@ -133,52 +169,53 @@ public class GroupedTable extends Application implements Constants {
         }
 
         // Build a string representation of the calculated results.
-        StringBuilder resultsString = new StringBuilder();
-        for (int i = 0; i < resultsArray.size(); i++) {
-            resultsString.append(resultsArray.get(i));
-            if (i < resultsArray.size() - 1) {
-                resultsString.append(", ");
-            }
-        }
-
-        // Display an information dialog with the calculated result.
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Information Dialog");
-        alert.setHeaderText("Minimum video file size.");
-        alert.setContentText("The calculated result is: " + resultsString + " MBs");
+        Alert alert = getAlert(resultsArray, "Minimum video file size.");
 
         alert.getButtonTypes().setAll(javafx.scene.control.ButtonType.OK);
         alert.showAndWait();
     }
 
-    // Method to handle the action when "Sort by Duration" menu item is clicked.
+    /**
+     * Method to handle the action when "Sort by Duration" menu item is clicked.
+     */
     void onMenuSBDurationClicked() {
-        for (TableView<VideoFile> tableView : groupTables) {
+        for (TableView<VideoFile> tableView : GROUP_TABLES) {
             ObservableList<VideoFile> videos = tableView.getItems();
             shellSort(videos, Comparator.comparing(VideoFile::getFileDuration));
             tableView.setItems(videos);
         }
     }
 
-    // Method to handle the action when "Sort by Size" menu item is clicked.
+    /**
+     * Method to handle the action when "Sort by Size" menu item is clicked.
+     */
     void onMenuSBSizeClicked() {
-        for (TableView<VideoFile> tableView : groupTables) {
+        for (TableView<VideoFile> tableView : GROUP_TABLES) {
             ObservableList<VideoFile> videos = tableView.getItems();
             shellSort(videos, Comparator.comparing(VideoFile::getVideoSize));
             tableView.setItems(videos);
         }
     }
 
-    // Method to handle the action when "Sort by Format" menu item is clicked.
+    /**
+     * Method to handle the action when "Sort by Format" menu item is clicked.
+     */
     void onMenuSBFormatClicked() {
-        for (TableView<VideoFile> tableView : groupTables) {
+        for (TableView<VideoFile> tableView : GROUP_TABLES) {
             ObservableList<VideoFile> videos = tableView.getItems();
             shellSort(videos, Comparator.comparing(VideoFile::getFileFormat));
             tableView.setItems(videos);
         }
     }
 
-    // JavaFX Application start method.
+    //------------------------------------------------------------------------------------------
+
+    /**
+     * JavaFX grouped table window start method.
+     *
+     * @param primaryStage The primary stage for this application.
+     * @throws Exception If an exception occurs during the application start.
+     */
     @Override
     public void start(Stage primaryStage) throws Exception {
         Stage stage = new Stage();
@@ -258,7 +295,7 @@ public class GroupedTable extends Application implements Constants {
         ObservableList<String> category = FXCollections.observableArrayList();
 
         // Populate the category list based on the grouping type.
-        switch (groupingType) {
+        switch (GROUPING_TYPE) {
             case AUDIO_CODEC:
                 for (VideoFile videoFile : videoFiles) {
                     String audioCodec = videoFile.getAudioCodec();
@@ -304,7 +341,7 @@ public class GroupedTable extends Application implements Constants {
             ObservableList<VideoFile> groupVideoFiles = FXCollections.observableArrayList();
 
             // Populate the groupVideoFiles based on the grouping type.
-            switch (groupingType) {
+            switch (GROUPING_TYPE) {
                 case AUDIO_CODEC:
                     for (VideoFile videoFile : videoFiles) {
                         if (videoFile.getAudioCodec().equals(item)) {
@@ -337,11 +374,11 @@ public class GroupedTable extends Application implements Constants {
 
             // Add the TableView to the VBox and the list of groupTables.
             vbox.getChildren().add(tableOfGroup);
-            groupTables.add(tableOfGroup);
+            GROUP_TABLES.add(tableOfGroup);
         }
 
         // Special case for groupingType LONGEST_VIDEOS.
-        if (groupingType == GroupingType.LONGEST_VIDEOS) {
+        if (GROUPING_TYPE == GroupingType.LONGEST_VIDEOS) {
             TableView<VideoFile> longestVideosTable = new TableView<>();
             longestVideosTable.setPrefWidth(800);
             longestVideosTable.setPrefHeight(135);
@@ -366,7 +403,7 @@ public class GroupedTable extends Application implements Constants {
 
             // Add the TableView to the VBox and the list of groupTables.
             vbox.getChildren().add(longestVideosTable);
-            groupTables.add(longestVideosTable);
+            GROUP_TABLES.add(longestVideosTable);
         }
 
         // Create the scene and set it to the stage.

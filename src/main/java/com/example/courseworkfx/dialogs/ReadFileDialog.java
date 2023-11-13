@@ -24,7 +24,8 @@ import static com.example.courseworkfx.dialogs.InvalidFileFormatAlert.showInvali
  */
 public class ReadFileDialog extends Application implements Constants {
 
-    private TableView<VideoFile> tableView;
+    // table instance
+    private final TableView<VideoFile> TABLE_VIEW;
 
     /**
      * Constructs a new `ReadFileDialog` instance with the specified `tableView`.
@@ -32,8 +33,10 @@ public class ReadFileDialog extends Application implements Constants {
      * @param tableView The TableView to populate with the read data.
      */
     public ReadFileDialog(TableView<VideoFile> tableView) {
-        this.tableView = tableView;
+        this.TABLE_VIEW = tableView;
     }
+
+    //------------------------------------------------------------------------------------------
 
     /**
      * JavaFX Application start method.
@@ -65,7 +68,7 @@ public class ReadFileDialog extends Application implements Constants {
 
             try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
                 String line;
-                ObservableList<VideoFile> fileList = tableView.getItems();
+                ObservableList<VideoFile> fileList = TABLE_VIEW.getItems();
 
                 // Skip the header line
                 reader.readLine();
@@ -76,7 +79,7 @@ public class ReadFileDialog extends Application implements Constants {
                         fileList.add(parsedFile);
                     }
                 }
-                tableView.setItems(fileList);
+                TABLE_VIEW.setItems(fileList);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

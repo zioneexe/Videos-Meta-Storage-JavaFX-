@@ -17,7 +17,8 @@ import java.io.IOException;
  */
 public class SaveFileDialog extends Application {
 
-    private TableView<VideoFile> tableView;
+    // table instance
+    private final TableView<VideoFile> TABLE_VIEW;
 
     /**
      * Constructs a new `SaveFileDialog` instance with the specified `tableView`.
@@ -25,8 +26,10 @@ public class SaveFileDialog extends Application {
      * @param tableView The TableView whose content needs to be saved.
      */
     public SaveFileDialog(TableView<VideoFile> tableView) {
-        this.tableView = tableView;
+        this.TABLE_VIEW = tableView;
     }
+
+    //------------------------------------------------------------------------------------------
 
     /**
      * JavaFX Application start method.
@@ -53,14 +56,14 @@ public class SaveFileDialog extends Application {
                 BufferedWriter writer = new BufferedWriter(new FileWriter(file));
 
                 // Check if the table view is empty
-                if (tableView.getItems().isEmpty()) {
+                if (TABLE_VIEW.getItems().isEmpty()) {
                     // If the table is empty, write a message to the file
                     writer.write("Unlucky.. The table is empty!");
                 } else {
                     // If the table is not empty, write the header and data to the file
                     writer.write("Name;File location;File format;Duration (HH:MM:SS);" +
                             "VCodec;ACodec;Has subtitles;Video size (MB);Player,\n");
-                    for (VideoFile videoFile : tableView.getItems()) {
+                    for (VideoFile videoFile : TABLE_VIEW.getItems()) {
                         writer.write(videoFile.toString());
                     }
                 }
@@ -72,7 +75,7 @@ public class SaveFileDialog extends Application {
                 System.out.println("Data has been written to: " + file.getAbsolutePath());
             } catch (IOException e) {
                 // Handle IOException by printing the stack trace
-                e.printStackTrace();
+                System.out.println(e.getMessage());
             }
         } else {
             // If no file was selected, show an information alert
