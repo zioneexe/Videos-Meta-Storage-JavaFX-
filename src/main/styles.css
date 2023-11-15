@@ -1,0 +1,8 @@
+.center-aligned-column {
+  -fx-alignment: CENTER;
+}
+
+.sidebarStyle {
+  -fx-background-color: #defdf3;
+  -fx-opacity: 0.97;
+}
