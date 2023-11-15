@@ -70,6 +70,7 @@
                   <Menu text="Group by">
                      <items>
                         <MenuItem fx:id="menuGBLongestVideos" mnemonicParsing="false" onAction="#onMenuGBLongestVideosClicked" text="Longest videos" />
+                        <MenuItem fx:id="menuGBFormat" mnemonicParsing="false" onAction="#onMenuGBFormatClicked" text="Format" />
                         <MenuItem fx:id="menuGBAudioCodec" mnemonicParsing="false" onAction="#onMenuGBAudioCodecClicked" text="Audio Codec" />
                         <MenuItem fx:id="menuGBVideoCodec" mnemonicParsing="false" onAction="#onMenuGBVideoCodecClicked" text="Video Codec" />
                         <MenuItem fx:id="menuGBPlayer" mnemonicParsing="false" onAction="#onMenuGBPlayerClicked" text="Player" />

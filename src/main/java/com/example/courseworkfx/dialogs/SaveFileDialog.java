@@ -8,8 +8,11 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+
+import static com.example.courseworkfx.dialogs.CancelDialogAlert.showCancelDialogAlert;
 
 /**
  * The `SaveFileDialog` class is responsible for saving the content of a TableView to a text file.
@@ -17,7 +20,7 @@ import java.io.IOException;
  */
 public class SaveFileDialog extends Application {
 
-    // table instance
+    // Table instance
     private final TableView<VideoFile> TABLE_VIEW;
 
     /**
@@ -38,7 +41,7 @@ public class SaveFileDialog extends Application {
      * @throws IOException If an exception occurs during the file saving process.
      */
     @Override
-    public void start(Stage primaryStage) throws IOException {
+    public void start(Stage primaryStage) throws Exception {
         // Set the title of the primary stage
         primaryStage.setTitle("Save the table.");
 
@@ -48,42 +51,49 @@ public class SaveFileDialog extends Application {
         fileChooser.setInitialFileName("output.txt");
 
         // Show the save dialog and get the selected file
-        java.io.File file = fileChooser.showSaveDialog(primaryStage);
+        File file = fileChooser.showSaveDialog(primaryStage);
 
         if (file != null) {
             try {
-                // Create a buffered writer for writing to the selected file
-                BufferedWriter writer = new BufferedWriter(new FileWriter(file));
-
-                // Check if the table view is empty
-                if (TABLE_VIEW.getItems().isEmpty()) {
-                    // If the table is empty, write a message to the file
-                    writer.write("Unlucky.. The table is empty!");
-                } else {
-                    // If the table is not empty, write the header and data to the file
-                    writer.write("Name;File location;File format;Duration (HH:MM:SS);" +
-                            "VCodec;ACodec;Has subtitles;Video size (MB);Player,\n");
-                    for (VideoFile videoFile : TABLE_VIEW.getItems()) {
-                        writer.write(videoFile.toString());
-                    }
-                }
-
-                // Close the writer
-                writer.close();
-
-                // Print a message indicating that the data has been written to the file
-                System.out.println("Data has been written to: " + file.getAbsolutePath());
+                writeTableToFile(file);
             } catch (IOException e) {
                 // Handle IOException by printing the stack trace
                 System.out.println(e.getMessage());
             }
         } else {
-            // If no file was selected, show an information alert
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("File Selection");
-            alert.setHeaderText(null);
-            alert.setContentText("File selection was canceled.");
-            alert.showAndWait();
+            showCancelDialogAlert();
         }
+    }
+
+    /**
+     * Writes the data from the TableView to the specified file.
+     *
+     * @param file The File object to which the data will be written.
+     * @throws IOException If an IOException occurs during the file writing process.
+     */
+    private void writeTableToFile(File file) throws IOException {
+        // Create a buffered writer for writing to the selected file
+        BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+
+        try {
+            // Check if the table view is empty
+            if (TABLE_VIEW.getItems().isEmpty()) {
+                // If the table is empty, write a message to the file
+                writer.write("Unlucky.. The table is empty!");
+            } else {
+                // If the table is not empty, write the header and data to the file
+                writer.write("Name;File location;File format;Duration (HH:MM:SS);" +
+                        "VCodec;ACodec;Has subtitles;Video size (MB);Player,\n");
+                for (VideoFile videoFile : TABLE_VIEW.getItems()) {
+                    writer.write(videoFile.toString());
+                }
+            }
+        } finally {
+            // Close the writer in a finally block to ensure it gets closed even if an exception occurs
+            writer.close();
+        }
+
+        // Print a message indicating that the data has been written to the file
+        System.out.println("Data has been written to: " + file.getAbsolutePath());
     }
 }

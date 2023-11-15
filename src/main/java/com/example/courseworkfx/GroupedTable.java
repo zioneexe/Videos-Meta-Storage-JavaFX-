@@ -26,9 +26,26 @@ import static com.example.courseworkfx.dialogs.EmptyTableAlert.showEmptyTableAle
  * The `GroupedTable` class represents a JavaFX application to display and manipulate a grouped table of VideoFile objects.
  */
 public class GroupedTable extends Application implements Constants {
+
+    // ArrayList to store grouped tables
     private final ArrayList<TableView<VideoFile>> GROUP_TABLES = new ArrayList<>();
+
+    // ArrayList of initial videos of each table
+    private final ArrayList<ObservableList<VideoFile>> SAVED_VIDEOS = new ArrayList<>();
+
+    // Observable list to store video files
     private ObservableList<VideoFile> videoFiles;
 
+    // ArrayList of grouping categories
+    private ArrayList<String> categories = new ArrayList<>();
+
+    // Current stage
+    private Stage stage;
+
+    // Main scene component
+    private VBox vbox;
+
+    // Menu components
     MenuBar menuBar;
     Menu sortMenu;
     MenuItem menuSBDuration;
@@ -39,6 +56,30 @@ public class GroupedTable extends Application implements Constants {
     MenuItem menuCalcMinSize;
     Menu filterMenu;
     CheckMenuItem menuFBSubtitles;
+
+    // Table columns
+    TableColumn<VideoFile, String> nameColumn;
+
+    TableColumn<VideoFile, String> pathColumn;
+
+    TableColumn<VideoFile, String> formatColumn;
+
+    TableColumn<VideoFile, Double> durationColumn;
+
+    TableColumn<VideoFile, String> vcodecColumn;
+
+    TableColumn<VideoFile, String> acodecColumn;
+
+    TableColumn<VideoFile, Boolean> subtitlesColumn;
+
+
+    TableColumn<VideoFile, Double> sizeColumn;
+
+
+    TableColumn<VideoFile, String> playerColumn;
+
+
+    // Grouping type for the tables
     private final GroupingType GROUPING_TYPE;
 
     /**
@@ -57,8 +98,10 @@ public class GroupedTable extends Application implements Constants {
      */
     void onMenuFBSubtitlesChecked() {
         boolean subtitlesChecked = menuFBSubtitles.isSelected();
-        for (TableView<VideoFile> tableView : GROUP_TABLES) {
-            checkGroupForSubtitles(subtitlesChecked, tableView, videoFiles);
+        for (int i = 0; i < GROUP_TABLES.size(); ++i) {
+            TableView<VideoFile> tableView = GROUP_TABLES.get(i);
+            ObservableList<VideoFile> tableVideos = subtitlesChecked ? tableView.getItems() : SAVED_VIDEOS.get(i);
+            checkGroupForSubtitles(subtitlesChecked, tableView, tableVideos);
         }
     }
 
@@ -181,8 +224,8 @@ public class GroupedTable extends Application implements Constants {
     void onMenuSBDurationClicked() {
         for (TableView<VideoFile> tableView : GROUP_TABLES) {
             ObservableList<VideoFile> videos = tableView.getItems();
-            shellSort(videos, Comparator.comparing(VideoFile::getFileDuration));
-            tableView.setItems(videos);
+            ObservableList<VideoFile> sortedVideos = shellSort(videos, Comparator.comparing(VideoFile::getFileDuration));
+            tableView.setItems(sortedVideos);
         }
     }
 
@@ -192,8 +235,8 @@ public class GroupedTable extends Application implements Constants {
     void onMenuSBSizeClicked() {
         for (TableView<VideoFile> tableView : GROUP_TABLES) {
             ObservableList<VideoFile> videos = tableView.getItems();
-            shellSort(videos, Comparator.comparing(VideoFile::getVideoSize));
-            tableView.setItems(videos);
+            ObservableList<VideoFile> sortedVideos = shellSort(videos, Comparator.comparing(VideoFile::getVideoSize));
+            tableView.setItems(sortedVideos);
         }
     }
 
@@ -203,8 +246,8 @@ public class GroupedTable extends Application implements Constants {
     void onMenuSBFormatClicked() {
         for (TableView<VideoFile> tableView : GROUP_TABLES) {
             ObservableList<VideoFile> videos = tableView.getItems();
-            shellSort(videos, Comparator.comparing(VideoFile::getFileFormat));
-            tableView.setItems(videos);
+            ObservableList<VideoFile> sortedVideos = shellSort(videos, Comparator.comparing(VideoFile::getFileFormat));
+            tableView.setItems(sortedVideos);
         }
     }
 
@@ -218,12 +261,81 @@ public class GroupedTable extends Application implements Constants {
      */
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Stage stage = new Stage();
+        vbox = new VBox();
+
+        setStage();
+        setMenu();
+        setColumnValueFactories();
+
+        // Populate the category list based on the grouping type.
+        formCategoriesList();
+        // Create TableView instances for each category and add them to the VBox.
+        for (String category : categories) {
+            populateCategoryTable(category);
+        }
+
+        // Special case for groupingType LONGEST_VIDEOS.
+        if (GROUPING_TYPE == GroupingType.LONGEST_VIDEOS) {
+            createLongestVideosTable();
+        }
+
+        // Create the scene and set it to the stage.
+        Scene scene = new Scene(vbox);
+        stage.setScene(scene);
+
+        // Show the stage.
+        stage.show();
+    }
+
+    /**
+     * Sets up the stage for the application.
+     * Configures the title and adds an icon to the stage.
+     */
+    private void setStage() {
+        stage = new Stage();
         stage.setTitle("Grouped Table");
         stage.getIcons().add(new Image(ICON_FILEPATH));
+    }
 
-        VBox vbox = new VBox();
+    /**
+     * Sets up TableColumn instances for the TableView and associates them with specific properties of the VideoFile class.
+     * Each TableColumn represents a different attribute of a video file.
+     */
+    private void setColumnValueFactories() {
+        nameColumn = new TableColumn<>("Video");
+        nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
 
+        pathColumn = new TableColumn<>("Path");
+        pathColumn.setCellValueFactory(new PropertyValueFactory<>("fileLocation"));
+
+        formatColumn = new TableColumn<>("Format");
+        formatColumn.setCellValueFactory(new PropertyValueFactory<>("fileFormat"));
+
+        durationColumn = new TableColumn<>("Duration (mins)");
+        durationColumn.setCellValueFactory(new PropertyValueFactory<>("fileDuration"));
+
+        vcodecColumn = new TableColumn<>("Video Codec");
+        vcodecColumn.setCellValueFactory(new PropertyValueFactory<>("videoCodec"));
+
+        acodecColumn = new TableColumn<>("Audio Codec");
+        acodecColumn.setCellValueFactory(new PropertyValueFactory<>("audioCodec"));
+
+        subtitlesColumn = new TableColumn<>("Subtitles");
+        subtitlesColumn.setCellValueFactory(cellData -> cellData.getValue().hasSubtitlesProperty());
+        subtitlesColumn.setCellFactory(CheckBoxTableCell.forTableColumn(subtitlesColumn));
+
+        sizeColumn = new TableColumn<>("Size (MB)");
+        sizeColumn.setCellValueFactory(new PropertyValueFactory<>("videoSize"));
+
+        playerColumn = new TableColumn<>("Player");
+        playerColumn.setCellValueFactory(new PropertyValueFactory<>("player"));
+    }
+
+    /**
+     * Sets up the MenuBar, Menu, and MenuItems for the application.
+     * Configures action event handlers for menu items.
+     */
+    private void setMenu() {
         menuBar = new MenuBar();
         sortMenu = new Menu("Sort by");
         menuSBDuration = new MenuItem("Duration");
@@ -238,9 +350,9 @@ public class GroupedTable extends Application implements Constants {
         sortMenu.getItems().addAll(menuSBDuration, menuSBSize, menuSBFormat);
         calculateMenu.getItems().addAll(menuCalcMaxSize, menuCalcMinSize);
         filterMenu.getItems().add(menuFBSubtitles);
+
         menuBar.getMenus().addAll(sortMenu, calculateMenu, filterMenu);
 
-        // Set action event handlers for menu items.
         menuSBDuration.setOnAction(e -> onMenuSBDurationClicked());
         menuSBSize.setOnAction(e -> onMenuSBSizeClicked());
         menuSBFormat.setOnAction(e -> onMenuSBFormatClicked());
@@ -261,156 +373,150 @@ public class GroupedTable extends Application implements Constants {
         menuFBSubtitles.setOnAction(e -> onMenuFBSubtitlesChecked());
 
         vbox.getChildren().add(menuBar);
+    }
 
-        // Define TableColumn instances for the TableView.
-        TableColumn<VideoFile, String> nameColumn = new TableColumn<>("Video");
-        nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
-
-        TableColumn<VideoFile, String> pathColumn = new TableColumn<>("Path");
-        pathColumn.setCellValueFactory(new PropertyValueFactory<>("fileLocation"));
-
-        TableColumn<VideoFile, String> formatColumn = new TableColumn<>("Format");
-        formatColumn.setCellValueFactory(new PropertyValueFactory<>("fileFormat"));
-
-        TableColumn<VideoFile, Double> durationColumn = new TableColumn<>("Duration (mins)");
-        durationColumn.setCellValueFactory(new PropertyValueFactory<>("fileDuration"));
-
-        TableColumn<VideoFile, String> vcodecColumn = new TableColumn<>("Video Codec");
-        vcodecColumn.setCellValueFactory(new PropertyValueFactory<>("videoCodec"));
-
-        TableColumn<VideoFile, String> acodecColumn = new TableColumn<>("Audio Codec");
-        acodecColumn.setCellValueFactory(new PropertyValueFactory<>("audioCodec"));
-
-        TableColumn<VideoFile, Boolean> subtitlesColumn = new TableColumn<>("Subtitles");
-        subtitlesColumn.setCellValueFactory(cellData -> cellData.getValue().hasSubtitlesProperty());
-        subtitlesColumn.setCellFactory(CheckBoxTableCell.forTableColumn(subtitlesColumn));
-
-        TableColumn<VideoFile, Double> sizeColumn = new TableColumn<>("Size (MB)");
-        sizeColumn.setCellValueFactory(new PropertyValueFactory<>("videoSize"));
-
-        TableColumn<VideoFile, String> playerColumn = new TableColumn<>("Player");
-        playerColumn.setCellValueFactory(new PropertyValueFactory<>("player"));
-
-        // ObservableList to store the unique categories based on groupingType.
-        ObservableList<String> category = FXCollections.observableArrayList();
-
-        // Populate the category list based on the grouping type.
+    /**
+     * Forms a list of categories based on the specified grouping type.
+     * The categories are determined from the attributes of the VideoFile class.
+     */
+    private void formCategoriesList() {
         switch (GROUPING_TYPE) {
+            case FORMAT:
+                for (VideoFile videoFile : videoFiles) {
+                    String fileFormat = videoFile.getFileFormat();
+                    if (!categories.contains(fileFormat)) {
+                        categories.add(fileFormat);
+                    }
+                }
+                break;
             case AUDIO_CODEC:
                 for (VideoFile videoFile : videoFiles) {
                     String audioCodec = videoFile.getAudioCodec();
-                    if (!category.contains(audioCodec)) {
-                        category.add(audioCodec);
+                    if (!categories.contains(audioCodec)) {
+                        categories.add(audioCodec);
                     }
                 }
                 break;
             case VIDEO_CODEC:
                 for (VideoFile videoFile : videoFiles) {
                     String videoCodec = videoFile.getVideoCodec();
-                    if (!category.contains(videoCodec)) {
-                        category.add(videoCodec);
+                    if (!categories.contains(videoCodec)) {
+                        categories.add(videoCodec);
                     }
                 }
                 break;
             case PLAYER:
                 for (VideoFile videoFile : videoFiles) {
                     String player = videoFile.getPlayer();
-                    if (!category.contains(player)) {
-                        category.add(player);
+                    if (!categories.contains(player)) {
+                        categories.add(player);
                     }
                 }
                 break;
             case LONGEST_VIDEOS:
+                // Not handling this case for forming categories.
+                break;
+            default:
+                throw new RuntimeException("Invalid grouping mode.");
+        }
+    }
+
+    /**
+     * Populates a TableView with VideoFile objects for a specific category.
+     * The category can be either a file format, audio codec, video codec, or player.
+     *
+     * @param category The category for which to populate the TableView.
+     */
+    private void populateCategoryTable(String category) {
+        VBox categoryVBox = new VBox();
+        TableView<VideoFile> tableOfGroup = new TableView<>();
+
+        setColumnValueFactories();
+
+        tableOfGroup.getColumns().addAll(nameColumn, pathColumn, formatColumn, durationColumn,
+                vcodecColumn, acodecColumn, subtitlesColumn, sizeColumn, playerColumn);
+        tableOfGroup.setPrefWidth(850);
+        tableOfGroup.setPrefHeight(135);
+
+        // Label for displaying the category name.
+        Label categoryLabel = new Label(category);
+        categoryLabel.setFont(Font.font("System", FontWeight.BOLD, 12));
+
+        // ObservableList to store VideoFile objects for the current category.
+        ObservableList<VideoFile> groupVideoFiles;
+
+        // Populate the groupVideoFiles based on the grouping type.
+        switch (GROUPING_TYPE) {
+            case FORMAT:
+                groupVideoFiles = videoFiles.filtered(videoFile -> videoFile.getFileFormat().equals(category));
+                break;
+            case AUDIO_CODEC:
+                groupVideoFiles = videoFiles.filtered(videoFile -> videoFile.getAudioCodec().equals(category));
+                break;
+            case VIDEO_CODEC:
+                groupVideoFiles = videoFiles.filtered(videoFile -> videoFile.getVideoCodec().equals(category));
+                break;
+            case PLAYER:
+                groupVideoFiles = videoFiles.filtered(videoFile -> videoFile.getPlayer().equals(category));
                 break;
             default:
                 throw new RuntimeException("Invalid grouping mode.");
         }
 
-        // Create TableView instances for each category and add them to the VBox.
-        for (String item : category) {
-            TableView<VideoFile> tableOfGroup = new TableView<>();
-            tableOfGroup.setPrefWidth(800);
-            tableOfGroup.setPrefHeight(135);
+        // Set the columns and items for the current TableView.
+        tableOfGroup.setItems(groupVideoFiles);
 
-            // Label for displaying the category name.
-            Label categoryLabel = new Label(item);
-            categoryLabel.setFont(Font.font("System", FontWeight.BOLD, 12));
-            vbox.getChildren().add(categoryLabel);
+        // Add the TableView to the VBox and the list of groupTables.
+        GROUP_TABLES.add(tableOfGroup);
+        SAVED_VIDEOS.add(tableOfGroup.getItems());
+        categoryVBox.getChildren().addAll(categoryLabel, tableOfGroup);
+        vbox.getChildren().add(categoryVBox);
+    }
 
-            // ObservableList to store VideoFile objects for the current category.
-            ObservableList<VideoFile> groupVideoFiles = FXCollections.observableArrayList();
+    /**
+     * Creates a TableView for the longest videos based on the file duration.
+     * The TableView displays videos with the maximum duration.
+     */
+    private void createLongestVideosTable() {
+        TableView<VideoFile> longestVideosTable = new TableView<>();
+        longestVideosTable.setPrefWidth(800);
+        longestVideosTable.setPrefHeight(135);
+        ObservableList<VideoFile> filteredList = FXCollections.observableArrayList();
 
-            // Populate the groupVideoFiles based on the grouping type.
-            switch (GROUPING_TYPE) {
-                case AUDIO_CODEC:
-                    for (VideoFile videoFile : videoFiles) {
-                        if (videoFile.getAudioCodec().equals(item)) {
-                            groupVideoFiles.add(videoFile);
-                        }
-                    }
-                    break;
-                case VIDEO_CODEC:
-                    for (VideoFile videoFile : videoFiles) {
-                        if (videoFile.getVideoCodec().equals(item)) {
-                            groupVideoFiles.add(videoFile);
-                        }
-                    }
-                    break;
-                case PLAYER:
-                    for (VideoFile videoFile : videoFiles) {
-                        if (videoFile.getPlayer().equals(item)) {
-                            groupVideoFiles.add(videoFile);
-                        }
-                    }
-                    break;
-                default:
-                    throw new RuntimeException("Invalid grouping mode.");
-            }
+        // Find the maximum duration among all videos.
+        double maxDuration = videoFiles.stream()
+                .mapToDouble(VideoFile::getFileDuration)
+                .max()
+                .orElse(0);
 
-            // Set the columns and items for the current TableView.
-            tableOfGroup.getColumns().addAll(nameColumn, pathColumn, formatColumn, durationColumn,
-                    vcodecColumn, acodecColumn, subtitlesColumn, sizeColumn, playerColumn);
-            tableOfGroup.setItems(groupVideoFiles);
+        // Filter videos with the maximum duration.
+        filteredList.addAll(videoFiles.stream()
+                .filter(videoFile -> videoFile.getFileDuration() == maxDuration)
+                .toList());
 
-            // Add the TableView to the VBox and the list of groupTables.
-            vbox.getChildren().add(tableOfGroup);
-            GROUP_TABLES.add(tableOfGroup);
-        }
+        setColumnValueFactories();
 
-        // Special case for groupingType LONGEST_VIDEOS.
-        if (GROUPING_TYPE == GroupingType.LONGEST_VIDEOS) {
-            TableView<VideoFile> longestVideosTable = new TableView<>();
-            longestVideosTable.setPrefWidth(800);
-            longestVideosTable.setPrefHeight(135);
-            ObservableList<VideoFile> filteredList = FXCollections.observableArrayList();
+        // Set columns and items for the TableView of longest videos.
+        longestVideosTable.getColumns().addAll(nameColumn, pathColumn, formatColumn, durationColumn,
+                vcodecColumn, acodecColumn, subtitlesColumn, sizeColumn, playerColumn);
+        longestVideosTable.setItems(filteredList);
 
-            // Find the maximum duration among all videos.
-            double maxDuration = videoFiles.stream()
-                    .mapToDouble(VideoFile::getFileDuration)
-                    .max()
-                    .orElse(0);
+        // Add the TableView to the VBox and the list of groupTables.
+        vbox.getChildren().add(longestVideosTable);
+        GROUP_TABLES.add(longestVideosTable);
+        SAVED_VIDEOS.add(longestVideosTable.getItems());
+    }
 
-            // Filter videos with the maximum duration.
-            filteredList.addAll(videoFiles.stream()
-                    .filter(videoFile -> videoFile.getFileDuration() == maxDuration)
-                    .toList());
-            videoFiles = filteredList;
+    /**
+     * Handles the close request for the dialog.
+     * It is triggered when the user attempts to close the dialog window.
+     * Closes the dialog window, releasing associated resources.
+     */
+    void handleCloseRequest() {
+        // Obtain a reference to the stage (window) containing the button
+        Stage stage = (Stage) GROUP_TABLES.get(0).getScene().getWindow();
 
-            // Set columns and items for the TableView of longest videos.
-            longestVideosTable.getColumns().addAll(nameColumn, pathColumn, formatColumn, durationColumn,
-                    vcodecColumn, acodecColumn, subtitlesColumn, sizeColumn, playerColumn);
-            longestVideosTable.setItems(videoFiles);
-
-            // Add the TableView to the VBox and the list of groupTables.
-            vbox.getChildren().add(longestVideosTable);
-            GROUP_TABLES.add(longestVideosTable);
-        }
-
-        // Create the scene and set it to the stage.
-        Scene scene = new Scene(vbox);
-        stage.setScene(scene);
-
-        // Show the stage.
-        stage.show();
+        // Close the dialog window
+        stage.close();
     }
 }

@@ -11,7 +11,6 @@ import static com.example.courseworkfx.dialogs.InvalidDataAlert.showInvalidDataA
 
 /**
  * The `AddDialogController` class controls the behavior of the dialog for adding a new video file.
- * It implements the Initializable interface to initialize the controller after its root element has been completely processed.
  */
 public class AddDialogController implements Constants {
 
@@ -45,7 +44,7 @@ public class AddDialogController implements Constants {
     @FXML
     private TextField textFieldVCodec;
 
-    // instance of main controller class
+    // Instance of main controller class
     private CourseworkController courseworkController;
 
     /**

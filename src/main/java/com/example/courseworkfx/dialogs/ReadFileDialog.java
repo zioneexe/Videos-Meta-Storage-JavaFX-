@@ -16,6 +16,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 
+import static com.example.courseworkfx.dialogs.CancelDialogAlert.showCancelDialogAlert;
 import static com.example.courseworkfx.dialogs.InvalidFileFormatAlert.showInvalidFileFormatAlert;
 
 /**
@@ -24,7 +25,7 @@ import static com.example.courseworkfx.dialogs.InvalidFileFormatAlert.showInvali
  */
 public class ReadFileDialog extends Application implements Constants {
 
-    // table instance
+    // Table instance
     private final TableView<VideoFile> TABLE_VIEW;
 
     /**
@@ -50,8 +51,8 @@ public class ReadFileDialog extends Application implements Constants {
 
         FileChooser fileChooser = new FileChooser();
         fileChooser.setInitialDirectory(new File(CHOOSE_FILEPATH));
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("All Files", "*.*"));
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Text Files", "*.txt"));
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("All Files", "*.*"));
         File file = fileChooser.showOpenDialog(primaryStage);
 
         if (file != null) {
@@ -65,30 +66,35 @@ public class ReadFileDialog extends Application implements Constants {
                 System.out.println(e.getMessage());
                 return;
             }
-
-            try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
-                String line;
-                ObservableList<VideoFile> fileList = TABLE_VIEW.getItems();
-
-                // Skip the header line
-                reader.readLine();
-
-                while ((line = reader.readLine()) != null) {
-                    VideoFile parsedFile = VideoFileParser.parse(line);
-                    if (parsedFile != null) {
-                        fileList.add(parsedFile);
-                    }
-                }
-                TABLE_VIEW.setItems(fileList);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+            readFromFileAndPopulateTable(file);
         } else {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("File Selection");
-            alert.setHeaderText(null);
-            alert.setContentText("File selection was canceled.");
-            alert.showAndWait();
+            showCancelDialogAlert();
+        }
+    }
+
+    /**
+     * Reads data from the specified file and populates the associated TableView with the parsed VideoFile objects.
+     *
+     * @param file The File object from which to read data.
+     * @throws RuntimeException If an IOException occurs during the file reading process.
+     */
+    private void readFromFileAndPopulateTable(File file) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+            String line;
+            ObservableList<VideoFile> fileList = TABLE_VIEW.getItems();
+
+            // Skip the header line
+            reader.readLine();
+
+            while ((line = reader.readLine()) != null) {
+                VideoFile parsedFile = VideoFileParser.parse(line);
+                if (parsedFile != null) {
+                    fileList.add(parsedFile);
+                }
+            }
+            TABLE_VIEW.setItems(fileList);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 }

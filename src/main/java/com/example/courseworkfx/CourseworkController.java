@@ -29,9 +29,7 @@ import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.Comparator;
-import java.util.Locale;
-import java.util.ResourceBundle;
+import java.util.*;
 
 import static com.example.courseworkfx.dialogs.EmptyTableAlert.showEmptyTableAlert;
 import static com.example.courseworkfx.dialogs.InvalidDataAlert.showInvalidDataAlert;
@@ -56,6 +54,7 @@ public class CourseworkController implements Initializable, Constants {
      */
 
     public enum GroupingType {
+        FORMAT,
         AUDIO_CODEC,
         VIDEO_CODEC,
         PLAYER,
@@ -64,7 +63,7 @@ public class CourseworkController implements Initializable, Constants {
 
     //------------------------------------------------------------------------------------------
 
-    // sidebar transition instance
+    // Sidebar transition instance
     private TranslateTransition sidebarTransition;
 
     // FXML elements injected by the FXMLLoader
@@ -94,7 +93,73 @@ public class CourseworkController implements Initializable, Constants {
     private ImageView buttonWrite;
 
     @FXML
+    private MenuItem menuAbout;
+
+    @FXML
+    private MenuItem menuCalcAvgDuration;
+
+    @FXML
+    private MenuItem menuCalcAvgSize;
+
+    @FXML
+    private MenuItem menuCalcMaxDuration;
+
+    @FXML
+    private MenuItem menuCalcMaxSize;
+
+    @FXML
+    private MenuItem menuCalcMinSize;
+
+    @FXML
+    private MenuItem menuFBDuration;
+
+    @FXML
+    private MenuItem menuFBFormat;
+
+    @FXML
+    private MenuItem menuFBName;
+
+    @FXML
+    private MenuItem menuFBPath;
+
+    @FXML
     private CheckMenuItem menuFBSubtitles;
+
+    @FXML
+    private MenuItem menuGBAudioCodec;
+
+    @FXML
+    private MenuItem menuGBFormat;
+
+    @FXML
+    private MenuItem menuGBLongestVideos;
+
+    @FXML
+    private MenuItem menuGBPlayer;
+
+    @FXML
+    private MenuItem menuGBVideoCodec;
+
+    @FXML
+    private MenuItem menuRead;
+
+    @FXML
+    private MenuItem menuSBDuration;
+
+    @FXML
+    private MenuItem menuSBFormat;
+
+    @FXML
+    private MenuItem menuSBSize;
+
+    @FXML
+    private MenuItem menuSave;
+
+    @FXML
+    private MenuItem menuVideosAdd;
+
+    @FXML
+    private MenuItem menuVideosRemove;
 
     @FXML
     private TableView<VideoFile> tableView;
@@ -106,10 +171,13 @@ public class CourseworkController implements Initializable, Constants {
     private TableColumn<VideoFile, String> pathColumn;
 
     @FXML
-    private TableColumn<VideoFile, String> formatColumn;
+    private TableColumn<VideoFile, String> playerColumn;
 
     @FXML
-    private TableColumn<VideoFile, Double> durationColumn;
+    private TableColumn<VideoFile, Double> sizeColumn;
+
+    @FXML
+    private TableColumn<VideoFile, Boolean> subtitlesColumn;
 
     @FXML
     private TableColumn<VideoFile, String> vcodecColumn;
@@ -118,13 +186,10 @@ public class CourseworkController implements Initializable, Constants {
     private TableColumn<VideoFile, String> acodecColumn;
 
     @FXML
-    private TableColumn<VideoFile, Boolean> subtitlesColumn;
+    private TableColumn<VideoFile, Double> durationColumn;
 
     @FXML
-    private TableColumn<VideoFile, Double> sizeColumn;
-
-    @FXML
-    private TableColumn<VideoFile, String> playerColumn;
+    private TableColumn<VideoFile, String> formatColumn;
 
     // Other class fields
     private ObservableList<VideoFile> dataList;
@@ -199,7 +264,7 @@ public class CourseworkController implements Initializable, Constants {
     }
 
     @FXML
-    void onImageWriteClicked(MouseEvent event) throws IOException {
+    void onImageWriteClicked(MouseEvent event) throws Exception {
         // Handle the event when the "Write" image is clicked
         writeToFile();
     }
@@ -352,6 +417,12 @@ public class CourseworkController implements Initializable, Constants {
     }
 
     @FXML
+    void onMenuGBFormatClicked(ActionEvent event) throws Exception {
+        // Display a grouped table based on format
+        showGroupedTable(GroupingType.FORMAT);
+    }
+
+    @FXML
     void onMenuGBAudioCodecClicked(ActionEvent event) throws Exception {
         // Display a grouped table based on audio codec
         showGroupedTable(GroupingType.AUDIO_CODEC);
@@ -397,8 +468,8 @@ public class CourseworkController implements Initializable, Constants {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        shellSort(videos, Comparator.comparing(VideoFile::getFileDuration));
-        tableView.setItems(videos);
+        ObservableList<VideoFile> sortedVideos = shellSort(videos, Comparator.comparing(VideoFile::getFileDuration));
+        tableView.setItems(sortedVideos);
     }
 
     @FXML
@@ -417,8 +488,8 @@ public class CourseworkController implements Initializable, Constants {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        shellSort(videos, Comparator.comparing(VideoFile::getVideoSize));
-        tableView.setItems(videos);
+        ObservableList<VideoFile> sortedVideos = shellSort(videos, Comparator.comparing(VideoFile::getVideoSize));
+        tableView.setItems(sortedVideos);
     }
 
     @FXML
@@ -437,8 +508,8 @@ public class CourseworkController implements Initializable, Constants {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        shellSort(videos, Comparator.comparing(VideoFile::getFileFormat));
-        tableView.setItems(videos);
+        ObservableList<VideoFile> sortedVideos = shellSort(videos, Comparator.comparing(VideoFile::getFileFormat));
+        tableView.setItems(sortedVideos);
     }
 
     @FXML
@@ -473,7 +544,7 @@ public class CourseworkController implements Initializable, Constants {
                 SaveFileDialog saveDialog = new SaveFileDialog(tableView);
                 try {
                     saveDialog.start(new Stage());
-                } catch (IOException e) {
+                } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
             }
@@ -500,17 +571,21 @@ public class CourseworkController implements Initializable, Constants {
     }
 
     // Implementation of shell sort algorithm
-    static <T> void shellSort(ObservableList<T> list, Comparator<T> comparing) {
-        for (int d = list.size() / 2; d >= 1; d /= 2) {
-            for (int i = d; i < list.size(); ++i) {
-                T key = list.get(i);
+    static <T> ObservableList<T> shellSort(ObservableList<T> list, Comparator<T> comparing) {
+        List<T> sortedList = new ArrayList<>(list);
+        for (int d = sortedList.size() / 2; d >= 1; d /= 2) {
+            for (int i = d; i < sortedList.size(); ++i) {
+                T key = sortedList.get(i);
                 int j;
-                for (j = i; j >= d && comparing.compare(list.get(j - d), key) > 0; j -= d) {
-                    list.set(j, list.get(j - d));
+                for (j = i; j >= d && comparing.compare(sortedList.get(j - d), key) > 0; j -= d) {
+                    sortedList.set(j, sortedList.get(j - d));
                 }
-                list.set(j, key);
+                sortedList.set(j, key);
             }
         }
+
+        ObservableList<T> observableSortedList = FXCollections.observableArrayList(sortedList);
+        return observableSortedList;
     }
 
     /**
@@ -559,7 +634,7 @@ public class CourseworkController implements Initializable, Constants {
      *
      * @throws IOException If an I/O exception occurs during the file writing process.
      */
-    void writeToFile() throws IOException {
+    void writeToFile() throws Exception {
         // Write video data to a file, providing a warning if the table is empty
         if (tableView.getItems().isEmpty()) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -950,6 +1025,11 @@ public class CourseworkController implements Initializable, Constants {
         }
         GroupedTable groupedTable = new GroupedTable(videoFiles, groupingType);
         groupedTable.start(new Stage());
+
+        Stage mainStage = (Stage) tableView.getScene().getWindow();
+        mainStage.setOnCloseRequest(event -> {
+            groupedTable.handleCloseRequest();
+        });
     }
 
     /**
