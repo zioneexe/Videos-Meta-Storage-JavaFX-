@@ -13,19 +13,19 @@ public interface Constants {
     //------------------------------------------------------------------------------------------
 
     // File paths for icons and images
-    String ICON_FILEPATH = "C:\\Users\\w3stn\\IdeaProjects\\CourseworkFX\\assets\\icon.png";
-    String CHOOSE_FILEPATH = "C:\\Users\\w3stn\\IdeaProjects\\CourseworkFX\\";
-    String IMAGE_ADD_FILEPATH = "C:\\Users\\w3stn\\IdeaProjects\\CourseworkFX\\assets\\add.png";
-    String IMAGE_DELETE_FILEPATH = "C:\\Users\\w3stn\\IdeaProjects\\CourseworkFX\\assets\\delete.png";
-    String IMAGE_READ_FILEPATH = "C:\\Users\\w3stn\\IdeaProjects\\CourseworkFX\\assets\\read.png";
-    String IMAGE_WRITE_FILEPATH = "C:\\Users\\w3stn\\IdeaProjects\\CourseworkFX\\assets\\write.png";
-    String IMAGE_HELP_FILEPATH = "C:\\Users\\w3stn\\IdeaProjects\\CourseworkFX\\assets\\help.png";
-    String IMAGE_EXIT_FILEPATH = "C:\\Users\\w3stn\\IdeaProjects\\CourseworkFX\\assets\\exit.png";
+    String ICON_FILEPATH = "...\\assets\\icon.png";
+    String CHOOSE_FILEPATH = "...\\CourseworkFX\\";
+    String IMAGE_ADD_FILEPATH = "...\\assets\\add.png";
+    String IMAGE_DELETE_FILEPATH = "...\\assets\\delete.png";
+    String IMAGE_READ_FILEPATH = "...\\assets\\read.png";
+    String IMAGE_WRITE_FILEPATH = "...\\assets\\write.png";
+    String IMAGE_HELP_FILEPATH = "...\\assets\\help.png";
+    String IMAGE_EXIT_FILEPATH = "...\\assets\\exit.png";
 
     // Styles path
 
-    String STYLES_PATH = "C:\\Users\\w3stn\\IdeaProjects\\CourseworkFX\\src\\main\\styles.css";
+    String STYLES_PATH = "...\\src\\main\\styles.css";
 
     // Documentation path
-    String DOCUMENTATION_PATH = "D:\\Шпортко ПЗ-25 курсова робота.docx";
+    String DOCUMENTATION_PATH = "path\to\documentation";
 }
