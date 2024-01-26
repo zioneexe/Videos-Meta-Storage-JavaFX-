@@ -12,11 +12,11 @@ It's a coursework actually.
 
 ## Contents
 
-- [VideoFile App :open_file_folder:](#simple-app-for-storing-and-manipulating-video-files-metadata-sparkles)
-  - [Content](#contents)
+- [VideoFile App :sparkles:](#simple-app-for-storing-and-manipulating-video-files-metadata-sparkles)
+  - [Contents :open_file_folder:](#contents)
   - [Installation :wrench:](#installation-wrench)
   - [How to Use :question:](#how-to-use-question)
-  - [Functionality :octocat:](#functionality-octocatt)
+  - [Functionality :octocat:](#functionality-octocat)
   - [Storage format :cd:](#storage-format-cd)
   - [About me :wink:](#about-me-wink)
 
