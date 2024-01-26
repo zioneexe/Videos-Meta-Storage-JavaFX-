@@ -6,7 +6,7 @@ It's a GUI app manipulating data in table format.\
 This project is made in JavaFX by me as a part of my study in university.\
 It's a coursework actually. 
 
-## Here's how it looks like:
+## Here's how it looks:
 
 ![Main app page](/assets/sample.png "star repo pls :)")
 
